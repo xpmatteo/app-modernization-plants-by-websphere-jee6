@@ -1,14 +1,13 @@
-version: '3.8'
-
 services:
   mysql:
-    image: mysql:5.7
+    image: mysql:8.0
     container_name: pbw-mysql
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: plantsdb
       MYSQL_USER: pbwuser
       MYSQL_PASSWORD: pbwpass
+      MYSQL_ROOT_HOST: '%'
     ports:
       - "3306:3306"
     volumes:
