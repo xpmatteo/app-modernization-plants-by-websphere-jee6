@@ -11,3 +11,4 @@
 # Allow
 !target/*.war
 !target/*.ear
+target
