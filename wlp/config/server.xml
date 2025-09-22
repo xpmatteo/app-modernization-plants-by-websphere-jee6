@@ -33,13 +33,14 @@
     </dataSource> -->
 
 <variable name="MYSQL_JDBC_DRIVER_PATH" value="/opt/ol/wlp/usr/shared/resources/mysql/" />
-    <jdbcDriver id="MySQL 5.1.38.1" javax.sql.DataSource="com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource">
+    <jdbcDriver id="MySQL 8.0.33" javax.sql.DataSource="com.mysql.cj.jdbc.MysqlConnectionPoolDataSource">
             <library>
-                <file name="${MYSQL_JDBC_DRIVER_PATH}/mysql-connector-java-5.1.38.jar"/>
+                <file name="${MYSQL_JDBC_DRIVER_PATH}/mysql-connector-java-8.0.33.jar"/>
             </library>
         </jdbcDriver>
-    <dataSource id="MySQL JTA for Plants by WebSphere" jdbcDriverRef="MySQL 5.1.38.1" jndiName="jdbc/PlantsByWebSphereMySQLDataSource">
-            <properties databaseName="plantsdb" password="${env.DB_PASSWORD}" portNumber="${env.DB_PORT}" serverName="${env.DB_HOST}" user="${env.DB_USER}" relaxAutoCommit="false"/>
+    <dataSource id="MySQL JTA for Plants by WebSphere" jdbcDriverRef="MySQL 8.0.33" jndiName="jdbc/PlantsByWebSphereMySQLDataSource">
+            <properties databaseName="plantsdb" password="${env.DB_PASSWORD}" portNumber="${env.DB_PORT}" serverName="${env.DB_HOST}" user="${env.DB_USER}"
+                       useSSL="false" allowPublicKeyRetrieval="true" serverTimezone="UTC"/>
             <connectionManager agedTimeout="0" connectionTimeout="180" maxIdleTime="1800" maxPoolSize="10" minPoolSize="1" reapTime="180"/>
         </dataSource>
       

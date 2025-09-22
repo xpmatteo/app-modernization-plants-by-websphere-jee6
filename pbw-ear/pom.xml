@@ -27,6 +27,12 @@
       <version>8.0</version>
       <type>war</type>
     </dependency>
+
+    <dependency>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
   <properties>
     <userName></userName>
@@ -80,6 +86,24 @@
                 </artifactItem>
               </artifactItems>
               <outputDirectory>../target</outputDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>copy-mysql-driver</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>com.mysql</groupId>
+                  <artifactId>mysql-connector-j</artifactId>
+                  <version>${mysql.connector.version}</version>
+                  <destFileName>mysql-connector-java-${mysql.connector.version}.jar</destFileName>
+                </artifactItem>
+              </artifactItems>
+              <outputDirectory>../wlp/usr/shared/resources/mysql</outputDirectory>
             </configuration>
           </execution>
         </executions>

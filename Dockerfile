@@ -4,7 +4,7 @@ FROM icr.io/appcafe/open-liberty:full-java8-openj9-ubi
 
 # Add MySQL  Type 4 JDBC driver
 RUN mkdir -p /opt/ol/wlp/usr/shared/resources/mysql
-COPY wlp/usr/shared/resources/mysql/mysql-connector-java-5.1.38.jar /opt/ol/wlp/usr/shared/resources/mysql/
+COPY wlp/usr/shared/resources/mysql/mysql-connector-java-8.0.33.jar /opt/ol/wlp/usr/shared/resources/mysql/
 USER root
 RUN chown 1001:0 /opt/ol/wlp/usr/shared/resources/mysql/*.jar
 USER default
