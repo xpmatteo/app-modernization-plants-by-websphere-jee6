@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: pbw-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: plantsdb
+      MYSQL_USER: pbwuser
+      MYSQL_PASSWORD: pbwpass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  app:
+    build: .
+    container_name: pbw-app
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: pbwuser
+      DB_PASSWORD: pbwpass
+    ports:
+      - "9080:9080"
+      - "9443:9443"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+volumes:
+  mysql_data:

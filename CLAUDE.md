@@ -38,7 +38,14 @@ cd pbw-web && mvn clean package    # Build web application
 cd pbw-ear && mvn clean package    # Build EAR assembly
 ```
 
-**Docker build:**
+**Run locally with Docker Compose (Recommended):**
+```bash
+docker-compose up -d        # Start application and database
+docker-compose logs -f      # View logs
+docker-compose down         # Stop everything
+```
+
+**Manual Docker build:**
 ```bash
 docker build -t plants-by-websphere .
 ```
@@ -62,6 +69,26 @@ docker build -t plants-by-websphere .
 - OpenShift-specific configurations in `openshift/` directory
 
 **Build output:** The final EAR file is `target/plants-by-websphere-jee6-mysql.ear`
+
+## Local Development
+
+**Running the application locally:**
+1. Build the application: `mvn clean package`
+2. Start with Docker Compose: `docker-compose up -d`
+3. Access the application: http://localhost:9080/pbw-web
+4. Access HTTPS: https://localhost:9443/pbw-web
+
+**Docker Compose includes:**
+- MySQL 5.7 database with automatic schema initialization from `docker/mariadb/init.sql`
+- WebSphere Liberty application server
+- Health checks and proper service dependencies
+- Persistent data storage for MySQL
+
+**Database details:**
+- Database: `plantsdb`
+- User: `pbwuser` / Password: `pbwpass`
+- Root password: `password`
+- Port: 3306 (exposed for debugging)
 
 ## Legacy Considerations
 
