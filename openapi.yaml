@@ -1,0 +1,388 @@
+openapi: 3.0.3
+info:
+  title: Plants by WebSphere eCommerce API
+  description: |
+    Legacy Java EE 6 servlet-based eCommerce application API documentation.
+    This application simulates an online plant store with customer management,
+    product catalog, shopping cart, and administrative functions.
+
+    **Base URL**: The application runs on WebSphere Liberty at `/pbw-web` context path.
+
+    **Authentication**:
+    - User operations use session-based authentication
+    - Admin operations require HTTP Basic authentication with `SampAdmin` role
+  version: 1.0.0
+  contact:
+    name: Plants by WebSphere
+    url: https://github.com/IBM/app-modernization-plants-by-websphere-jee6
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+
+servers:
+  - url: http://localhost:9080/pbw-web
+    description: Local development server
+  - url: https://localhost:9443/pbw-web
+    description: Local development server (HTTPS)
+
+paths:
+  /servlet/AccountServlet:
+    post:
+      tags:
+        - Account Management
+      summary: Handle user account operations
+      description: |
+        Multipurpose endpoint for user authentication and account management.
+        The specific operation is determined by the `action` parameter.
+      parameters:
+        - name: action
+          in: query
+          required: true
+          description: The action to perform
+          schema:
+            type: string
+            enum: [login, register, account, accountUpdate, SetLogging]
+        - name: userid
+          in: query
+          description: User email address (required for login)
+          schema:
+            type: string
+            format: email
+        - name: passwd
+          in: query
+          description: User password (required for login)
+          schema:
+            type: string
+            format: password
+        - name: updating
+          in: query
+          description: Flag indicating if user is updating account during login
+          schema:
+            type: string
+            enum: ["true", "false"]
+            default: "false"
+      responses:
+        '200':
+          description: Success - redirects to appropriate JSF page
+          content:
+            text/html:
+              schema:
+                type: string
+                description: HTML response with redirect or form
+        '302':
+          description: Redirect to login page or shopping page
+          headers:
+            Location:
+              schema:
+                type: string
+                example: "/login.jsf"
+        '400':
+          description: Bad request - invalid parameters
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication failed
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    get:
+      tags:
+        - Account Management
+      summary: Get account information
+      description: Retrieve current user account details
+      parameters:
+        - name: action
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [account]
+      responses:
+        '200':
+          description: Account information page
+          content:
+            text/html:
+              schema:
+                type: string
+        '401':
+          description: User not authenticated
+
+  /servlet/ImageServlet:
+    get:
+      tags:
+        - Product Catalog
+      summary: Get product image
+      description: Retrieve product image by inventory ID
+      parameters:
+        - name: action
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [getimage]
+        - name: inventoryID
+          in: query
+          required: true
+          description: Product inventory identifier
+          schema:
+            type: string
+            example: "1001"
+      responses:
+        '200':
+          description: Product image
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Image not found
+        '400':
+          description: Invalid inventory ID
+
+  /servlet/AdminServlet:
+    get:
+      tags:
+        - Administration
+      summary: Administrative operations (GET)
+      description: |
+        Handle various administrative functions including inventory management,
+        supplier configuration, and system maintenance.
+
+        **Security**: Requires HTTP Basic authentication with `SampAdmin` role.
+      security:
+        - BasicAuth: []
+      responses:
+        '200':
+          description: Admin operation successful
+          content:
+            text/html:
+              schema:
+                type: string
+        '401':
+          description: Authentication required
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+                example: Basic realm="Default"
+        '403':
+          description: Insufficient permissions - SampAdmin role required
+    post:
+      tags:
+        - Administration
+      summary: Administrative operations (POST)
+      description: |
+        Handle administrative form submissions and data modifications.
+
+        **Security**: Requires HTTP Basic authentication with `SampAdmin` role.
+      security:
+        - BasicAuth: []
+      responses:
+        '200':
+          description: Admin operation successful
+        '401':
+          description: Authentication required
+        '403':
+          description: Insufficient permissions
+
+  /servlet/ready:
+    get:
+      tags:
+        - Health Check
+      summary: Kubernetes readiness probe
+      description: |
+        Health check endpoint used by Kubernetes to determine if the
+        application is ready to accept traffic.
+      responses:
+        '200':
+          description: Application is ready
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "ready"
+        '503':
+          description: Application not ready
+
+  # JSF Pages (for completeness)
+  /promo.jsf:
+    get:
+      tags:
+        - Web Pages
+      summary: Home/promotional page
+      description: Main landing page of the application
+      responses:
+        '200':
+          description: Promotional page with featured products
+          content:
+            text/html:
+              schema:
+                type: string
+
+  /shopping.jsf:
+    get:
+      tags:
+        - Web Pages
+      summary: Product catalog page
+      description: Browse and search products
+      responses:
+        '200':
+          description: Product catalog page
+          content:
+            text/html:
+              schema:
+                type: string
+
+  /cart.jsf:
+    get:
+      tags:
+        - Web Pages
+      summary: Shopping cart page
+      description: View and manage shopping cart contents
+      responses:
+        '200':
+          description: Shopping cart page
+          content:
+            text/html:
+              schema:
+                type: string
+
+  /login.jsf:
+    get:
+      tags:
+        - Web Pages
+      summary: Login page
+      description: User authentication form
+      responses:
+        '200':
+          description: Login form page
+          content:
+            text/html:
+              schema:
+                type: string
+
+  /register.jsf:
+    get:
+      tags:
+        - Web Pages
+      summary: User registration page
+      description: New user registration form
+      responses:
+        '200':
+          description: Registration form page
+          content:
+            text/html:
+              schema:
+                type: string
+
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication for admin endpoints
+
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+        timestamp:
+          type: string
+          format: date-time
+        path:
+          type: string
+          description: Request path that caused the error
+      example:
+        error: "Authentication failed"
+        timestamp: "2025-09-24T10:30:00Z"
+        path: "/servlet/AccountServlet"
+
+    Customer:
+      type: object
+      properties:
+        customerID:
+          type: string
+          description: Unique customer identifier
+        firstName:
+          type: string
+        lastName:
+          type: string
+        addr1:
+          type: string
+          description: Primary address line
+        addr2:
+          type: string
+          description: Secondary address line
+        addrCity:
+          type: string
+          description: City
+        addrState:
+          type: string
+          description: State or province
+        addrZip:
+          type: string
+          description: ZIP or postal code
+        phone:
+          type: string
+        email:
+          type: string
+          format: email
+
+    Product:
+      type: object
+      properties:
+        inventoryID:
+          type: string
+          description: Product inventory identifier
+        name:
+          type: string
+          description: Product name
+        heading:
+          type: string
+          description: Product category/heading
+        description:
+          type: string
+          description: Product description
+        pkginfo:
+          type: string
+          description: Package information
+        price:
+          type: number
+          format: decimal
+          description: Product price
+        cost:
+          type: number
+          format: decimal
+          description: Product cost
+        quantity:
+          type: integer
+          description: Available quantity
+        category:
+          type: integer
+          description: Product category ID
+        notes:
+          type: string
+          description: Additional notes
+
+tags:
+  - name: Account Management
+    description: User authentication and account operations
+  - name: Product Catalog
+    description: Product browsing and image serving
+  - name: Administration
+    description: Administrative functions (requires SampAdmin role)
+  - name: Health Check
+    description: Application health and readiness monitoring
+  - name: Web Pages
+    description: JSF web pages (informational)
+
+externalDocs:
+  description: GitHub Repository
+  url: https://github.com/IBM/app-modernization-plants-by-websphere-jee6
