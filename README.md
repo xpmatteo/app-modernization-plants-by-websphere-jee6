@@ -1,4 +1,10 @@
 
+# Learning about AI-assisted modernization
+
+This repo is a fork of [a training repository](https://github.com/IBMAppModernization/app-modernization-plants-by-websphere-jee6 "GitHub - IBMAppModernization/app-modernization-plants-by-websphere-jee6: Java Enterprise Edition 6 version of the Plants By Websphere Sample modified to run in a Liberty container") that I'm using as a training ground for AI-assisted modernization.
+
+Original README follows:
+
 # IBM Client Developer Advocacy App Modernization Series
 
 ##  Plants by WebSphere Java EE 6  app for multiple labs in the App Modernization Series
