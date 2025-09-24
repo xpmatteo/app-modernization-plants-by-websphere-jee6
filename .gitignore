@@ -12,3 +12,4 @@
 !target/*.war
 !target/*.ear
 target
+.idea
