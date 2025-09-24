@@ -33,5 +33,19 @@ services:
       mysql:
         condition: service_healthy
 
+  spring-boot-app:
+    build: ./spring-boot-pbw
+    container_name: pbw-spring-boot
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/plantsdb
+      SPRING_DATASOURCE_USERNAME: pbwuser
+      SPRING_DATASOURCE_PASSWORD: pbwpass
+      SPRING_DATASOURCE_DRIVER-CLASS-NAME: com.mysql.cj.jdbc.Driver
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
 volumes:
   mysql_data:
