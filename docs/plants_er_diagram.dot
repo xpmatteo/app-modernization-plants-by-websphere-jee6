@@ -1,0 +1,36 @@
+digraph PlantsByWebSphereER {
+    rankdir=TB;
+    node [shape=box, style=filled, fillcolor=lightblue];
+    edge [dir=both, arrowtail=crow, arrowhead=none];
+
+    // Entity definitions
+    CUSTOMER;
+    ORDER1;
+    ORDERITEM;
+    INVENTORY;
+    BACKORDER;
+    SUPPLIER;
+    IDGENERATOR;
+
+    // Relationships deduced from foreign key patterns
+
+    // Customer places Orders (1:N)
+    CUSTOMER -> ORDER1 [label="places" arrowtail=none arrowhead=crow];
+
+    // Order contains OrderItems (1:N)
+    ORDER1 -> ORDERITEM [label="contains" arrowtail=none arrowhead=crow];
+
+    // Inventory item appears in OrderItems (1:N)
+    INVENTORY -> ORDERITEM [label="appears in" arrowtail=none arrowhead=crow];
+
+    // Inventory generates Backorders (1:N)
+    INVENTORY -> BACKORDER [label="generates" arrowtail=none arrowhead=crow];
+
+    // Supplier fulfills Backorders (1:N) - inferred from SUPPLIERORDERID
+    SUPPLIER -> BACKORDER [label="fulfills" arrowtail=none arrowhead=crow];
+
+    // Styling for better readability
+    {rank=same; CUSTOMER; SUPPLIER; IDGENERATOR}
+    {rank=same; ORDER1; INVENTORY}
+    {rank=same; ORDERITEM; BACKORDER}
+}
