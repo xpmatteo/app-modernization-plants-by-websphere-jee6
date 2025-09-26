@@ -26,6 +26,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import com.ibm.websphere.samples.pbw.jpa.Inventory;
+import com.ibm.websphere.samples.pbw.utils.RequestLogger;
 
 
 /**
@@ -66,10 +67,14 @@ public class CatalogMgr
 	 */
 	public Vector<Inventory> getItemsByCategory(int category)
 	{
+		RequestLogger.logEJBInvocation("CatalogMgr", "getItemsByCategory", category);
+		RequestLogger.logDatabaseOperation("NAMED_QUERY", "getItemsByCategory", category);
 		Query q = em.createNamedQuery("getItemsByCategory");
 		q.setParameter("category", category);
 		//The return type must be Vector because the PBW client ActiveX sample requires Vector
-		return new Vector<Inventory>(q.getResultList());
+		Vector<Inventory> result = new Vector<Inventory>(q.getResultList());
+		RequestLogger.logEJBResult("CatalogMgr", "getItemsByCategory", "Vector[size=" + result.size() + "]");
+		return result;
 	}
 
 	/**
@@ -107,8 +112,11 @@ public class CatalogMgr
 	 */
 	public Inventory getItemInventory(String inventoryID)
 	{
+		RequestLogger.logEJBInvocation("CatalogMgr", "getItemInventory", inventoryID);
+		RequestLogger.logDatabaseOperation("FIND", "Inventory", inventoryID);
 		Inventory si = null;
 		si = em.find(Inventory.class, inventoryID);
+		RequestLogger.logEJBResult("CatalogMgr", "getItemInventory", si != null ? "Inventory[" + inventoryID + "]" : "null");
 		return si;
 	}
 
@@ -120,9 +128,12 @@ public class CatalogMgr
 	 */
 	public boolean addItem(Inventory item)
 	{
+		RequestLogger.logEJBInvocation("CatalogMgr", "addItem", item != null ? item.getInventoryId() : "null");
 		boolean retval = true;
+		RequestLogger.logDatabaseOperation("PERSIST", "Inventory", item != null ? item.getInventoryId() : "null");
 		em.persist(item);
 		em.flush();
+		RequestLogger.logEJBResult("CatalogMgr", "addItem", retval);
 		return retval;
 	}
 
@@ -159,13 +170,14 @@ public class CatalogMgr
 	 */
 	public byte[] getItemImageBytes(String inventoryID)
 	{
+		RequestLogger.logEJBInvocation("CatalogMgr", "getItemImageBytes", inventoryID);
 		byte[] retval = null;
 		Inventory inv = getInv(inventoryID);
 		if (inv != null)
 		{
 			retval = inv.getImgbytes();
 		}
-
+		RequestLogger.logEJBResult("CatalogMgr", "getItemImageBytes", retval != null ? "byte[" + retval.length + "]" : "null");
 		return retval;
 	}
 
@@ -176,11 +188,14 @@ public class CatalogMgr
 	 */
 	public void setItemImageBytes(String inventoryID, byte[] imgbytes)
 	{
+		RequestLogger.logEJBInvocation("CatalogMgr", "setItemImageBytes", inventoryID, imgbytes != null ? "byte[" + imgbytes.length + "]" : "null");
 		Inventory inv = getInvUpdate(inventoryID);
 		if (inv != null)
 		{
+			RequestLogger.logDatabaseOperation("UPDATE", "Inventory.imgbytes", inventoryID);
 			inv.setImgbytes(imgbytes);
 		}
+		RequestLogger.logEJBResult("CatalogMgr", "setItemImageBytes", "void");
 	}
 
 	/**
@@ -191,11 +206,14 @@ public class CatalogMgr
 	 */
 	public void setItemQuantity(String inventoryID, int quantity)
 	{
+		RequestLogger.logEJBInvocation("CatalogMgr", "setItemQuantity", inventoryID, quantity);
 		Inventory inv = getInvUpdate(inventoryID);
 		if (inv != null)
 		{
+			RequestLogger.logDatabaseOperation("UPDATE", "Inventory.quantity", inventoryID, quantity);
 			inv.setQuantity(quantity);
 		}
+		RequestLogger.logEJBResult("CatalogMgr", "setItemQuantity", "void");
 	}
 
 	/**

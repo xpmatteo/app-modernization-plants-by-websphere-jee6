@@ -28,6 +28,7 @@ import javax.persistence.Query;
 import com.ibm.websphere.samples.pbw.jpa.BackOrder;
 import com.ibm.websphere.samples.pbw.jpa.Inventory;
 import com.ibm.websphere.samples.pbw.utils.Util;
+import com.ibm.websphere.samples.pbw.utils.RequestLogger;
 
 /**
  * The BackOrderMgr provides a transactional and secured
@@ -53,6 +54,7 @@ public class BackOrderMgr
 	 */
 	public void createBackOrder(String inventoryID, int amountToOrder, int maximumItems)
 	{
+		RequestLogger.logEJBInvocation("BackOrderMgr", "createBackOrder", inventoryID, amountToOrder, maximumItems);
 		try
 		{
 			Util.debug("BackOrderMgr.createBackOrder() - Entered");
@@ -61,6 +63,7 @@ public class BackOrderMgr
 			{
 				// See if there is already an existing backorder and increase the order quantity
 				// but only if it has not been sent to the supplier.
+				RequestLogger.logDatabaseOperation("NAMED_QUERY", "findByInventoryID", inventoryID);
 				Query q = em.createNamedQuery("findByInventoryID");
 				q.setParameter("id", inventoryID);
 				backOrder = (BackOrder) q.getSingleResult();
@@ -70,6 +73,7 @@ public class BackOrderMgr
 					throw new FinderException();
 				}
 				// Increase the BackOrder quantity for an existing Back Order.
+				RequestLogger.logDatabaseOperation("UPDATE", "BackOrder.quantity", backOrder.getBackOrderID(), backOrder.getQuantity() + amountToOrder);
 				backOrder.setQuantity(backOrder.getQuantity() + amountToOrder);
 			}
 			catch (NoResultException e)
@@ -79,14 +83,18 @@ public class BackOrderMgr
 				// Order enough stock from the supplier to reach the maximum threshold and to
 				// satisfy the back order.
 				amountToOrder = maximumItems + amountToOrder;
+				RequestLogger.logDatabaseOperation("FIND", "Inventory", inventoryID);
 				Inventory inv = em.find(Inventory.class, inventoryID);
 				BackOrder b = new BackOrder(inv, amountToOrder);
+				RequestLogger.logDatabaseOperation("PERSIST", "BackOrder", inventoryID, amountToOrder);
 				em.persist(b);
 			}
+			RequestLogger.logEJBResult("BackOrderMgr", "createBackOrder", "void");
 		}
 		catch (Exception e)
 		{
 			Util.debug("BackOrderMgr.createBackOrder() - Exception: " + e);
+			RequestLogger.logEJBResult("BackOrderMgr", "createBackOrder", "EXCEPTION: " + e.getMessage());
 		}
 	}
 
@@ -97,8 +105,12 @@ public class BackOrderMgr
 	@SuppressWarnings("unchecked")
 	public Collection<BackOrder> findBackOrders()
 	{
+		RequestLogger.logEJBInvocation("BackOrderMgr", "findBackOrders");
+		RequestLogger.logDatabaseOperation("NAMED_QUERY", "findAllBackOrders");
 		Query q = em.createNamedQuery("findAllBackOrders");
-		return q.getResultList();
+		Collection<BackOrder> result = q.getResultList();
+		RequestLogger.logEJBResult("BackOrderMgr", "findBackOrders", "Collection[size=" + result.size() + "]");
+		return result;
 	}
 
 	/**
@@ -107,10 +119,14 @@ public class BackOrderMgr
 	 */
 	public void deleteBackOrder(String backOrderID)
 	{
+		RequestLogger.logEJBInvocation("BackOrderMgr", "deleteBackOrder", backOrderID);
 		Util.debug("BackOrderMgr.deleteBackOrder() - Entered");
 		// BackOrderLocal backOrder = getBackOrderLocalHome().findByPrimaryKeyUpdate(backOrderID);
+		RequestLogger.logDatabaseOperation("FIND", "BackOrder", backOrderID);
 		BackOrder backOrder = em.find(BackOrder.class, backOrderID);
+		RequestLogger.logDatabaseOperation("REMOVE", "BackOrder", backOrderID);
 		em.remove(backOrder);
+		RequestLogger.logEJBResult("BackOrderMgr", "deleteBackOrder", "void");
 	}
 
 	/**

@@ -23,6 +23,7 @@ import javax.persistence.PersistenceContext;
 
 import com.ibm.websphere.samples.pbw.jpa.Customer;
 import com.ibm.websphere.samples.pbw.utils.Util;
+import com.ibm.websphere.samples.pbw.utils.RequestLogger;
 
 
 /**
@@ -56,10 +57,13 @@ public class CustomerMgr
 			String addrCity, String addrState, String addrZip,
 			String phone)
 	{
+		RequestLogger.logEJBInvocation("CustomerMgr", "createCustomer", customerID, "***MASKED***", firstName, lastName);
 		Customer c = new Customer(customerID, password, firstName, lastName, addr1, addr2,
 				addrCity, addrState, addrZip, phone);
+		RequestLogger.logDatabaseOperation("PERSIST", "Customer", customerID);
 		em.persist(c);
 		em.flush();
+		RequestLogger.logEJBResult("CustomerMgr", "createCustomer", "Customer[" + customerID + "]");
 		return c;
 	}
 	
@@ -71,9 +75,12 @@ public class CustomerMgr
 	 */    
 	public Customer getCustomer(String customerID)
 	{
+		RequestLogger.logEJBInvocation("CustomerMgr", "getCustomer", customerID);
+		RequestLogger.logDatabaseOperation("FIND", "Customer", customerID);
 		Customer c = em.find(Customer.class, customerID);
+		RequestLogger.logEJBResult("CustomerMgr", "getCustomer", c != null ? "Customer[" + customerID + "]" : "null");
 		return c;
-		
+
 	}
 
 	/**
@@ -90,10 +97,12 @@ public class CustomerMgr
 	 * @param phone User's phone number.
 	 * @return Customer
 	 */
-	public Customer updateUser(String customerID, String firstName, String lastName, 
-			String addr1, String addr2, String addrCity, 
+	public Customer updateUser(String customerID, String firstName, String lastName,
+			String addr1, String addr2, String addrCity,
 			String addrState, String addrZip,String phone)
 	{
+		RequestLogger.logEJBInvocation("CustomerMgr", "updateUser", customerID, firstName, lastName);
+		RequestLogger.logDatabaseOperation("FIND", "Customer", customerID);
 		Customer c = em.find(Customer.class, customerID);
 		em.lock(c, LockModeType.WRITE);
 		em.refresh(c);
@@ -106,7 +115,9 @@ public class CustomerMgr
 		c.setAddrState(addrState);
 		c.setAddrZip(addrZip);
 		c.setPhone(phone);
-		
+
+		RequestLogger.logDatabaseOperation("UPDATE", "Customer", customerID);
+		RequestLogger.logEJBResult("CustomerMgr", "updateUser", "Customer[" + customerID + "]");
 		return c;
 	}
 	
@@ -119,27 +130,30 @@ public class CustomerMgr
 	 */
 	public String verifyUserAndPassword(String customerID, String password)
 	{
+		RequestLogger.logEJBInvocation("CustomerMgr", "verifyUserAndPassword", customerID, "***MASKED***");
 		// Try to get customer.
 		String results = null;
 		Customer customer = null;
-		
+
+		RequestLogger.logDatabaseOperation("FIND", "Customer", customerID);
 		customer = em.find(Customer.class, customerID);
-		
+
 		// Does customer exists?
 		if (customer != null)
 		{
 			if ( ! customer.verifyPassword(password) )    // Is password correct?
 			{
-				results = "\nPassword does not match for : " + customerID; 
+				results = "\nPassword does not match for : " + customerID;
 				Util.debug("Password given does not match for userid=" + customerID);
 			}
 		}
 		else     // Customer was not found.
 		{
-			results = "\nCould not find account for : " + customerID; 
+			results = "\nCould not find account for : " + customerID;
 			Util.debug("customer " + customerID + " NOT found");
 		}
-		
+
+		RequestLogger.logEJBResult("CustomerMgr", "verifyUserAndPassword", results == null ? "SUCCESS" : "FAILURE");
 		return results;
 	}
 		

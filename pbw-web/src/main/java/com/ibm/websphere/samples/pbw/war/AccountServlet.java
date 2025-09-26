@@ -32,6 +32,7 @@ import com.ibm.websphere.samples.pbw.ejb.CatalogMgr;
 import com.ibm.websphere.samples.pbw.ejb.CustomerMgr;
 import com.ibm.websphere.samples.pbw.jpa.Customer;
 import com.ibm.websphere.samples.pbw.utils.Util;
+import com.ibm.websphere.samples.pbw.utils.RequestLogger;
 
 /**
  * Servlet to handle customer account actions, such as login and register.
@@ -93,6 +94,7 @@ public class AccountServlet extends HttpServlet
    private void performTask(HttpServletRequest req, HttpServletResponse resp)
            throws ServletException, IOException
    {
+      RequestLogger.logController("AccountServlet", "performTask");
       String action = null;
 
       action = req.getParameter(Util.ATTR_ACTION);
@@ -403,6 +405,8 @@ public class AccountServlet extends HttpServlet
            HttpServletResponse resp,
            String page)
            throws ServletException, IOException {
+           RequestLogger.logTemplate(page, "include");
+           RequestLogger.logTemplateData(req);
            resp.setContentType("text/html");
            ctx.getRequestDispatcher(page).include(req, resp);
    }

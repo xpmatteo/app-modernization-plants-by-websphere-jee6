@@ -39,6 +39,7 @@ import com.ibm.websphere.samples.pbw.jpa.BackOrder;
 import com.ibm.websphere.samples.pbw.jpa.Inventory;
 import com.ibm.websphere.samples.pbw.jpa.Supplier;
 import com.ibm.websphere.samples.pbw.utils.Util;
+import com.ibm.websphere.samples.pbw.utils.RequestLogger;
 /**
  * Servlet to handle Administration actions
  */
@@ -98,6 +99,7 @@ public class AdminServlet extends HttpServlet {
 	 * @throws IOException
 	 */
 	public void performTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		RequestLogger.logController("AdminServlet", "performTask");
 		String admintype = null;
 		admintype = req.getParameter(Util.ATTR_ADMINTYPE);
 		Util.debug("inside AdminServlet:performTask. admintype="+admintype);
@@ -342,6 +344,8 @@ public class AdminServlet extends HttpServlet {
 	 * Request dispatch
 	 */
 	private void requestDispatch(ServletContext ctx, HttpServletRequest req, HttpServletResponse resp, String page) throws ServletException, IOException {
+		RequestLogger.logTemplate(page, "forward");
+		RequestLogger.logTemplateData(req);
 		resp.setContentType("text/html");
 		ctx.getRequestDispatcher(page).forward(req, resp);
 	}
