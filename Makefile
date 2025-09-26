@@ -1,11 +1,4 @@
 
-
-.PHONY: restart
-restart:
-	mvn clean package
-	docker-compose down --volumes
-	docker-compose up -d --build
-
 .PHONY: restart
 restart:
 	mvn clean package
