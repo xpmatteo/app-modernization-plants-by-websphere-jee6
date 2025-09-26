@@ -38,6 +38,7 @@ import com.ibm.websphere.samples.pbw.jpa.Inventory;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.annotation.PostConstruct;
 
 /**
  * A combination JSF action bean and backing bean for the shopping web
@@ -54,6 +55,15 @@ public class ShoppingBean implements Serializable {
 
 	private static final Logger logger = Logger.getLogger(ShoppingBean.class.getName());
 
+	public ShoppingBean() {
+		logger.info("[ShoppingBean] Constructor - new session started");
+	}
+
+	@PostConstruct
+	public void init() {
+		logger.info("[ShoppingBean] PostConstruct - bean initialized and ready for use");
+	}
+
 	// keep an independent list of items so we can add pricing methods
 	private ArrayList<ShoppingItem> cartItems;
 
@@ -68,7 +78,7 @@ public class ShoppingBean implements Serializable {
 	private ShoppingCartBean shoppingCart;
 
 	public String performAddToCart () {
-		logger.info("[PBW-SHOPPING] Adding item to cart: " + this.product.getInventory().getName() +
+		logger.info("[ShoppingBean] performAddToCart() - Adding item: " + this.product.getInventory().getName() +
 				   " (quantity: " + this.product.getQuantity() + ")");
 
 		Inventory item = new Inventory(this.product.getInventory());
@@ -77,7 +87,9 @@ public class ShoppingBean implements Serializable {
 
 		shoppingCart.addItem(item);
 
-		return performCart();
+		String outcome = performCart();
+		logger.info("[ShoppingBean] performAddToCart() -> returning: '" + outcome + "' (resolves to: " + outcome + ".xhtml)");
+		return outcome;
 	}
 
 	public String performCart () {
@@ -93,15 +105,16 @@ public class ShoppingBean implements Serializable {
 			externalContext.getRequestParameterMap();
 
 		String itemID = requestParams.get("itemID");
-		logger.info("[PBW-SHOPPING] Viewing product details for itemID: " + itemID);
+		logger.info("[ShoppingBean] performProductDetail() - itemID: " + itemID);
 
 		this.product = new ProductBean (this.catalog.getItemInventory
 				(requestParams.get ("itemID")));
 
-		logger.info("[PBW-SHOPPING] Product loaded: " + this.product.getInventory().getName() +
-				   " (price: " + this.product.getInventory().getPrice() + ")");
+		String outcome = ShoppingBean.ACTION_PRODUCT;
+		logger.info("[ShoppingBean] performProductDetail() -> returning: '" + outcome + "' (resolves to: " + outcome + ".xhtml)");
+		logger.info("[ShoppingBean] Product data: " + this.product.toString());
 
-		return ShoppingBean.ACTION_PRODUCT;
+		return outcome;
 	}
 
 	public String performRecalculate () {

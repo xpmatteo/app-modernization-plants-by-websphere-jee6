@@ -78,4 +78,14 @@ public class ProductBean implements Serializable {
      public void setQuantity (int quantity) {
           this.quantity = quantity;
      }
+
+     @Override
+     public String toString() {
+         return String.format("ProductBean[id=%s, name=%s, price=$%.2f, quantity=%d, category=%s]",
+                             inventory.getInventoryId(),
+                             inventory.getName(),
+                             inventory.getPrice(),
+                             quantity,
+                             getCategoryName());
+     }
 }
