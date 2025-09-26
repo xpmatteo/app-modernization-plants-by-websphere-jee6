@@ -258,7 +258,8 @@ public class Util {
         }
         return (values);
     }
-    static private boolean debug = false;
+    // Enable debug by default in this modernization version
+    static private boolean debug = true;
     /** Set debug setting to on or off.
      * @param val True or false.
      */
@@ -274,6 +275,7 @@ public class Util {
      * @param msg Message to be output.
      */
     static final public void debug(String msg) {
+        // Check if we're in JSF context and can auto-enable debug in Development mode
         FacesContext context = FacesContext.getCurrentInstance();
         if (context != null) {
         	Application app = context.getApplication();
@@ -283,9 +285,11 @@ public class Util {
         			setDebug(true);
         		}
         	}
-        	if (debug) {
-        		System.out.println(msg);
-        	}
+        }
+
+        // Always output debug messages if debug is enabled, regardless of JSF context
+        if (debug) {
+        	System.out.println(msg);
         }
     }
 

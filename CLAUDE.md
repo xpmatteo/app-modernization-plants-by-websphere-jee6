@@ -181,3 +181,5 @@ docker run -p 8080:8080 pbw-spring-boot
 - Originally designed for traditional WebSphere Application Server
 - Contains transformation advisor modifications for Liberty migration
 - MySQL JDBC driver version 5.1.38 is embedded in the container
+- the application landing page is at http://localhost:9080/promo.jsf
+- ALWAYS use `make restart` to restart the application
