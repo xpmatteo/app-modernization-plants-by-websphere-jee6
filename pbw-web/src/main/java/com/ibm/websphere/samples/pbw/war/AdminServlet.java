@@ -143,6 +143,7 @@ public class AdminServlet extends HttpServlet {
 	 * @throws IOException
 	 */
 	public void performSupplierConfig(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		RequestLogger.logController("AdminServlet", "performSupplierConfig");
 		Supplier supplier = null;
 		String action = null;
 		action = req.getParameter(Util.ATTR_ACTION);
@@ -184,6 +185,7 @@ public class AdminServlet extends HttpServlet {
 	 * @throws IOException
 	 */
 	public void performPopulate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		RequestLogger.logController("AdminServlet", "performPopulate");
 		Populate popDB = new Populate(resetDB,catalog,login,backOrderStock,suppliers);
 		popDB.doPopulate();
 		sendRedirect(resp, "/PlantsByWebSphere/" + Util.PAGE_HELP);
@@ -196,6 +198,7 @@ public class AdminServlet extends HttpServlet {
 	 * @throws IOException
 	 */
 	public void performBackOrder(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		RequestLogger.logController("AdminServlet", "performBackOrder");
 		String action = null;
 		action = req.getParameter(Util.ATTR_ACTION);
 		if ((action == null) || (action.equals("")))

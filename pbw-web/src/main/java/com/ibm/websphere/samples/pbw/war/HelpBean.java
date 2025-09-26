@@ -17,6 +17,8 @@
 
 package com.ibm.websphere.samples.pbw.war;
 
+import java.util.logging.Logger;
+
 import javax.ejb.EJB;
 import javax.inject.Named;
 
@@ -29,6 +31,8 @@ import com.ibm.websphere.samples.pbw.utils.Util;
  */
 @Named("help")
 public class HelpBean {
+
+	private static final Logger logger = Logger.getLogger(HelpBean.class.getName());
 	
 	@EJB
 	private ResetDBBean rdb;
@@ -39,10 +43,12 @@ public class HelpBean {
 	private static final String ACTION_HOME = "promo";
 	
 	public String performHelp() {
+		logger.info("[HelpBean] performHelp() - displaying help page");
 		return ACTION_HELP;
 	}
 	
 	public String performDBReset() {
+		logger.info("[HelpBean] performDBReset() - resetting database");
 		rdb.resetDB();
 		return ACTION_HOME;
 	}

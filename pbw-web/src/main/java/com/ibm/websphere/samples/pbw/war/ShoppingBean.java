@@ -93,6 +93,7 @@ public class ShoppingBean implements Serializable {
 	}
 
 	public String performCart () {
+		logger.info("[ShoppingBean] performCart() - displaying shopping cart");
 		cartItems = wrapInventoryItems(shoppingCart.getItems());
 
 		return ShoppingBean.ACTION_CART;
@@ -118,6 +119,7 @@ public class ShoppingBean implements Serializable {
 	}
 
 	public String performRecalculate () {
+		logger.info("[ShoppingBean] performRecalculate() - recalculating cart totals");
 		
 		shoppingCart.removeZeroQuantityItems();
 
@@ -127,6 +129,7 @@ public class ShoppingBean implements Serializable {
 	}
 
 	public String performShopping () {
+		logger.info("[ShoppingBean] performShopping() - browsing inventory by category");
 		int category = 0;
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ExternalContext externalContext = facesContext.getExternalContext();

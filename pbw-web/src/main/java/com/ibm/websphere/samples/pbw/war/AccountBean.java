@@ -18,6 +18,7 @@ package com.ibm.websphere.samples.pbw.war;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -46,6 +47,7 @@ import javax.inject.Named;
 @SessionScoped
 public class AccountBean implements Serializable {
 	private static final long serialVersionUID = 1L;
+	private static final Logger logger = Logger.getLogger(AccountBean.class.getName());
 	private static final String ACTION_ACCOUNT = "account";
 	private static final String ACTION_CHECKOUT_FINAL = "checkout_final";
 	private static final String ACTION_LOGIN = "login";
@@ -72,6 +74,7 @@ public class AccountBean implements Serializable {
 	private boolean updating;
 
 	public String performAccount() {
+		logger.info("[AccountBean] performAccount() - checking user login status");
 		if (customer == null || loginInfo == null) {
 			checkingOut = false;
 			loginInfo = new LoginInfo();
@@ -89,6 +92,7 @@ public class AccountBean implements Serializable {
 	}
 
 	public String performAccountUpdate() {
+		logger.info("[AccountBean] performAccountUpdate() - " + (register ? "creating new customer" : "updating existing customer"));
 		if (register) {
 			customer = login.createCustomer(loginInfo.getEmail(),
 					loginInfo.getPassword(),
@@ -113,6 +117,7 @@ public class AccountBean implements Serializable {
 	}
 
 	public String performCheckoutFinal() {
+		logger.info("[AccountBean] performCheckoutFinal() - finalizing checkout with shipping method");
 		FacesContext context = FacesContext.getCurrentInstance();
 		Application app = context.getApplication();
 		ShoppingBean shopping = (ShoppingBean) app.createValueBinding(
@@ -125,6 +130,7 @@ public class AccountBean implements Serializable {
 	}
 
 	public String performCompleteCheckout() {
+		logger.info("[AccountBean] performCompleteCheckout() - processing order completion");
 		FacesContext context = FacesContext.getCurrentInstance();
 		Application app = context.getApplication();
 		app.createValueBinding("#{shopping}").getValue(context);
@@ -177,6 +183,7 @@ public class AccountBean implements Serializable {
 	}
 
 	public String performLogin() {
+		logger.info("[AccountBean] performLogin() - initializing login form");
 		checkingOut = false;
 		loginInfo = new LoginInfo();
 		register = false;
@@ -188,6 +195,7 @@ public class AccountBean implements Serializable {
 	}
 
 	public String performLoginComplete() {
+		logger.info("[AccountBean] performLoginComplete() - attempting user authentication");
 		String message;
 
 		// Attempt to log in the user.
@@ -219,6 +227,7 @@ public class AccountBean implements Serializable {
 	}
 
 	public String performOrderInfo() {
+		logger.info("[AccountBean] performOrderInfo() - preparing order information form");
 		if (customer == null) {
 			checkingOut = true;
 			loginInfo = new LoginInfo();
@@ -246,6 +255,7 @@ public class AccountBean implements Serializable {
 	}
 
 	public String performRegister() {
+		logger.info("[AccountBean] performRegister() - initializing user registration");
 		loginInfo = new LoginInfo();
 		newCustomer = new Customer("", "", "", "", "", "", "", "", "", "");
 		register = true;
