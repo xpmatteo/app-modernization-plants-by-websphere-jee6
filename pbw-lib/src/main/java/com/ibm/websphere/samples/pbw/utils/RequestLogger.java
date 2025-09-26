@@ -136,7 +136,7 @@ public class RequestLogger {
         if (!Util.debugOn()) return;
 
         StringBuilder logEntry = new StringBuilder();
-        logEntry.append(LOG_PREFIX).append("DB: ");
+        logEntry.append(LOG_PREFIX).append("DB_OP: ");
         logEntry.append(operation).append(" - ").append(query);
 
         if (params != null && params.length > 0) {
@@ -147,6 +147,26 @@ public class RequestLogger {
             }
             logEntry.append("]");
         }
+
+        // Note: Actual SQL will be logged by EclipseLink at FINE level
+        logEntry.append(" (SQL details in EclipseLink logs)");
+
+        Util.debug(logEntry.toString());
+    }
+
+    /**
+     * Log JPA entity manager operation with timing
+     */
+    public static void logJPAOperation(String operation, String entityType, Object id, long durationMs) {
+        if (!Util.debugOn()) return;
+
+        StringBuilder logEntry = new StringBuilder();
+        logEntry.append(LOG_PREFIX).append("JPA_TIMING: ");
+        logEntry.append(operation).append(" ").append(entityType);
+        if (id != null) {
+            logEntry.append("[").append(sanitizeValue(id)).append("]");
+        }
+        logEntry.append(" took ").append(durationMs).append("ms");
 
         Util.debug(logEntry.toString());
     }

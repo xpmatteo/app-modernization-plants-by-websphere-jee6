@@ -49,5 +49,13 @@
         <property name="mail.smtp.host" value="smtp.gmail.com"/>
     </mailSession>
 <applicationManager autoExpand="true"/>
+
+<!-- Logging configuration for JPA/EclipseLink SQL statements -->
+<logging traceSpecification="*=info:eclipselink.sql=fine:eclipselink.logging.sql=fine"
+         maxFileSize="100"
+         maxFiles="5"
+         traceFormat="ENHANCED"
+         consoleLogLevel="INFO"/>
+
 <application id="plants-by-websphere-jee6-mysql" name="plants-by-websphere-jee6-mysql" location="plants-by-websphere-jee6-mysql.ear"/>
 </server>

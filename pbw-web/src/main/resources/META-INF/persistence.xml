@@ -14,6 +14,22 @@
 
 	    	<property name="eclipselink.cache.shared.default" value="false"/>
 
+	    	<!-- JPA/EclipseLink SQL Logging Configuration -->
+	    	<!-- Log all SQL statements -->
+	    	<property name="eclipselink.logging.level.sql" value="FINE"/>
+	    	<!-- Log SQL parameter values -->
+	    	<property name="eclipselink.logging.parameters" value="true"/>
+	    	<!-- Log JPA operations -->
+	    	<property name="eclipselink.logging.level" value="FINE"/>
+	    	<!-- Use a logger that outputs to standard out -->
+	    	<property name="eclipselink.logging.logger" value="DefaultLogger"/>
+	    	<!-- Include session info in logs -->
+	    	<property name="eclipselink.logging.session" value="true"/>
+	    	<!-- Include connection info in logs -->
+	    	<property name="eclipselink.logging.connection" value="true"/>
+	    	<!-- Include timestamp in logs -->
+	    	<property name="eclipselink.logging.timestamp" value="true"/>
+
 		</properties>
 	</persistence-unit>
 </persistence>
