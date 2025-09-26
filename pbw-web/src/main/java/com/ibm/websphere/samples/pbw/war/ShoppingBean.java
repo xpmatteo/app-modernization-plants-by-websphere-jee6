@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -51,6 +52,8 @@ public class ShoppingBean implements Serializable {
 	private static final String ACTION_PRODUCT = "product";
 	private static final String ACTION_SHOPPING = "shopping";
 
+	private static final Logger logger = Logger.getLogger(ShoppingBean.class.getName());
+
 	// keep an independent list of items so we can add pricing methods
 	private ArrayList<ShoppingItem> cartItems;
 
@@ -65,6 +68,9 @@ public class ShoppingBean implements Serializable {
 	private ShoppingCartBean shoppingCart;
 
 	public String performAddToCart () {
+		logger.info("[PBW-SHOPPING] Adding item to cart: " + this.product.getInventory().getName() +
+				   " (quantity: " + this.product.getQuantity() + ")");
+
 		Inventory item = new Inventory(this.product.getInventory());
 
 		item.setQuantity (this.product.getQuantity());
@@ -86,8 +92,14 @@ public class ShoppingBean implements Serializable {
 		Map<String, String> requestParams =
 			externalContext.getRequestParameterMap();
 
+		String itemID = requestParams.get("itemID");
+		logger.info("[PBW-SHOPPING] Viewing product details for itemID: " + itemID);
+
 		this.product = new ProductBean (this.catalog.getItemInventory
 				(requestParams.get ("itemID")));
+
+		logger.info("[PBW-SHOPPING] Product loaded: " + this.product.getInventory().getName() +
+				   " (price: " + this.product.getInventory().getPrice() + ")");
 
 		return ShoppingBean.ACTION_PRODUCT;
 	}

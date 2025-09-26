@@ -91,6 +91,11 @@ public class RequestLoggingFilter implements Filter {
     private boolean shouldLogRequest(String requestURI) {
         if (requestURI == null) return false;
 
+        // Skip JSF resource requests (CSS, JS, images served by JSF)
+        if (requestURI.contains("/javax.faces.resource/")) {
+            return false;
+        }
+
         // Skip common static resources to reduce log noise
         String[] skipExtensions = {".css", ".js", ".png", ".jpg", ".jpeg", ".gif", ".ico", ".woff", ".woff2"};
         String lowerURI = requestURI.toLowerCase();
