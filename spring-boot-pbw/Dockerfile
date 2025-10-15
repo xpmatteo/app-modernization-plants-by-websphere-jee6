@@ -2,7 +2,7 @@
 # ABOUTME: Uses multi-stage build to create optimized container image
 
 # Build stage
-FROM eclipse-temurin:21-jdk as builder
+FROM eclipse-temurin:21-jdk AS builder
 WORKDIR /app
 COPY pom.xml .
 COPY mvnw .
