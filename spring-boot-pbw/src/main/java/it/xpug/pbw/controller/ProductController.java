@@ -22,11 +22,8 @@ public class ProductController {
 
     @GetMapping("/product")
     public String showProduct(@RequestParam String itemID, Model model) {
-        Product product = productRepository.findByInventoryId(itemID);
-
-        if (product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
-        }
+        Product product = productRepository.findByInventoryId(itemID)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
 
         model.addAttribute("product", product);
         model.addAttribute("title", "Plants By WebSphere Product Detail");

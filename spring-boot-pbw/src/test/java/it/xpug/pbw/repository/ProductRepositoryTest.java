@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -21,10 +23,11 @@ public class ProductRepositoryTest {
         String inventoryId = "T0003";
 
         // Act
-        Product product = productRepository.findByInventoryId(inventoryId);
+        Optional<Product> result = productRepository.findByInventoryId(inventoryId);
 
         // Assert
-        assertNotNull(product, "Product should be found");
+        assertTrue(result.isPresent(), "Product should be found");
+        Product product = result.get();
         assertEquals("T0003", product.getInventoryId());
         assertEquals("Bonsai", product.getName());
         assertEquals("Tabletop Fun", product.getHeading());
@@ -40,10 +43,11 @@ public class ProductRepositoryTest {
         String inventoryId = "V0006";
 
         // Act
-        Product product = productRepository.findByInventoryId(inventoryId);
+        Optional<Product> result = productRepository.findByInventoryId(inventoryId);
 
         // Assert
-        assertNotNull(product, "Product should be found");
+        assertTrue(result.isPresent(), "Product should be found");
+        Product product = result.get();
         assertEquals("V0006", product.getInventoryId());
         assertEquals("Strawberries", product.getName());
         assertEquals(3.50f, product.getPrice(), 0.01f);
@@ -52,26 +56,26 @@ public class ProductRepositoryTest {
     }
 
     @Test
-    public void shouldReturnNullForInvalidInventoryId() {
+    public void shouldReturnEmptyForInvalidInventoryId() {
         // Arrange: Invalid product ID
         String inventoryId = "INVALID123";
 
         // Act
-        Product product = productRepository.findByInventoryId(inventoryId);
+        Optional<Product> result = productRepository.findByInventoryId(inventoryId);
 
         // Assert
-        assertNull(product, "Should return null for non-existent product");
+        assertFalse(result.isPresent(), "Should return empty Optional for non-existent product");
     }
 
     @Test
-    public void shouldReturnNullForNullInventoryId() {
+    public void shouldReturnEmptyForNullInventoryId() {
         // Arrange: Null input
         String inventoryId = null;
 
         // Act
-        Product product = productRepository.findByInventoryId(inventoryId);
+        Optional<Product> result = productRepository.findByInventoryId(inventoryId);
 
         // Assert
-        assertNull(product, "Should handle null input gracefully");
+        assertFalse(result.isPresent(), "Should handle null input gracefully");
     }
 }

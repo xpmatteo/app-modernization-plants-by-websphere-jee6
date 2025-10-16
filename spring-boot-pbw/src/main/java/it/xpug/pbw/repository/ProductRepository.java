@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 
 @Repository
 public class ProductRepository {
@@ -22,11 +23,11 @@ public class ProductRepository {
     /**
      * Find a product by its inventory ID
      * @param inventoryId The product inventory ID (e.g., "T0003")
-     * @return Product if found, null otherwise
+     * @return Optional containing the Product if found, empty otherwise
      */
-    public Product findByInventoryId(String inventoryId) {
+    public Optional<Product> findByInventoryId(String inventoryId) {
         if (inventoryId == null) {
-            return null;
+            return Optional.empty();
         }
 
         String sql = "SELECT INVENTORYID, NAME, HEADING, DESCRIPTION, PKGINFO, IMAGE, " +
@@ -34,9 +35,10 @@ public class ProductRepository {
                     "FROM INVENTORY WHERE INVENTORYID = ?";
 
         try {
-            return jdbcTemplate.queryForObject(sql, new ProductRowMapper(), inventoryId);
+            Product product = jdbcTemplate.queryForObject(sql, new ProductRowMapper(), inventoryId);
+            return Optional.ofNullable(product);
         } catch (org.springframework.dao.EmptyResultDataAccessException e) {
-            return null;
+            return Optional.empty();
         }
     }
 
