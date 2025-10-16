@@ -68,14 +68,13 @@ public class ProductRepositoryTest {
     }
 
     @Test
-    public void shouldReturnEmptyForNullInventoryId() {
+    public void shouldThrowNullPointerExceptionForNullInventoryId() {
         // Arrange: Null input
         String inventoryId = null;
 
-        // Act
-        Optional<Product> result = productRepository.findByInventoryId(inventoryId);
-
-        // Assert
-        assertFalse(result.isPresent(), "Should handle null input gracefully");
+        // Act & Assert
+        assertThrows(NullPointerException.class, () -> {
+            productRepository.findByInventoryId(inventoryId);
+        }, "Should throw NullPointerException for null inventoryId");
     }
 }

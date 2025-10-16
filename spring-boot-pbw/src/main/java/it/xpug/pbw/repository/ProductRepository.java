@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.Optional;
 
 @Repository
@@ -22,13 +23,12 @@ public class ProductRepository {
 
     /**
      * Find a product by its inventory ID
-     * @param inventoryId The product inventory ID (e.g., "T0003")
+     * @param inventoryId The product inventory ID (e.g., "T0003"), must not be null
      * @return Optional containing the Product if found, empty otherwise
+     * @throws NullPointerException if inventoryId is null
      */
     public Optional<Product> findByInventoryId(String inventoryId) {
-        if (inventoryId == null) {
-            return Optional.empty();
-        }
+        Objects.requireNonNull(inventoryId, "inventoryId must not be null");
 
         String sql = "SELECT INVENTORYID, NAME, HEADING, DESCRIPTION, PKGINFO, IMAGE, " +
                     "PRICE, COST, QUANTITY, CATEGORY, NOTES, ISPUBLIC " +
