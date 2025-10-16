@@ -4,8 +4,19 @@ Plants by WebSphere - Legacy Java EE 6 plant store eCommerce demo with modernize
 
 ## Quick Start
 
-**Legacy App**: `make restart` → http://localhost:9080/promo.jsf
-**Spring Boot**: `cd spring-boot-pbw && ./mvnw spring-boot:run` → http://localhost:8080
+**⚠️ CRITICAL: Use `make restart` to run BOTH applications together via Docker Compose**
+
+- **Legacy App**: http://localhost:9080/promo.jsf
+- **Spring Boot**: http://localhost:8080
+
+## Running the Applications
+
+**`make restart` is the REQUIRED command for testing the applications manually.**
+
+- Rebuilds and restarts BOTH legacy (WebSphere Liberty) and Spring Boot apps via Docker Compose
+- Run from project root directory
+- Use this EVERY time you want to test changes manually in either application
+- Both apps share the same MariaDB database container
 
 ## Key Directories
 
@@ -35,6 +46,8 @@ Plants by WebSphere - Legacy Java EE 6 plant store eCommerce demo with modernize
 
 ## Essential Commands
 
-- `make restart` - Rebuild and restart legacy app with Docker Compose
-- `docker-compose logs -f app` - View application logs
-- `cd spring-boot-pbw && ./mvnw test` - Run Spring Boot tests
+- **`make restart`** - Rebuild and restart BOTH applications via Docker Compose (run from project root)
+- `docker-compose logs -f app` - View legacy application logs
+- `docker-compose logs -f spring-boot-pbw` - View Spring Boot application logs
+- `docker-compose down` - Stop all containers
+- `cd spring-boot-pbw && ./mvnw test` - Run Spring Boot tests (for development/testing only)
