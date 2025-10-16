@@ -8,9 +8,5 @@
 .project
 **/*.tgz
 
-# Allow
-!target/*.war
-!target/*.ear
-target
 .idea
 dependencies.png

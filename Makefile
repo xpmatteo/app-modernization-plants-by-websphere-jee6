@@ -17,7 +17,7 @@ reset-db:
 	docker-compose stop mysql
 	docker-compose rm -f mysql
 	docker volume rm app-modernization-plants-by-websphere-jee6_mysql_data || true
-	docker-compose up -d mysql
+	docker-compose up -d mysql --build
 
 .PHONY: mysql-console
 mysql-console:
