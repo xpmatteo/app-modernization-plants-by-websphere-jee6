@@ -4,19 +4,27 @@ Plants by WebSphere - Legacy Java EE 6 plant store eCommerce demo with modernize
 
 ## Quick Start
 
-**⚠️ CRITICAL: Use `make restart` to run BOTH applications together via Docker Compose**
+```bash
+make          # Show all available commands
+make restart  # Rebuild and start both applications
+make test     # Run all tests
+```
 
+**Application URLs:**
 - **Legacy App**: http://localhost:9080/promo.jsf
 - **Spring Boot**: http://localhost:8080
 
-## Running the Applications
+## ⚠️ CRITICAL: Manual Testing
 
-**`make restart` is the REQUIRED command for testing the applications manually.**
+**ALWAYS use `make restart` for testing the applications manually.**
 
-- Rebuilds and restarts BOTH legacy (WebSphere Liberty) and Spring Boot apps via Docker Compose
-- Run from project root directory
-- Use this EVERY time you want to test changes manually in either application
-- Both apps share the same MariaDB database container
+This command:
+- Rebuilds BOTH legacy (WebSphere Liberty) and Spring Boot applications
+- Starts them via Docker Compose with shared MariaDB database
+- Ensures you're testing the correct, consistent environment
+- Must be run from the project root directory
+
+**NEVER run `./mvnw spring-boot:run` for manual testing** - you won't know which version you're hitting (Docker vs local).
 
 ## Key Directories
 
@@ -27,12 +35,15 @@ Plants by WebSphere - Legacy Java EE 6 plant store eCommerce demo with modernize
 
 ## Database
 
-- **Connection**: `plantsdb` / `pbwuser` / `pbwpass` on localhost:3306
+- **Connection**: `plantsdb` / `pbwuser` / `pbwpass` @ localhost:3306
 - **Init script**: `docker/mariadb/init.sql` (auto-loaded via Docker Compose)
-- **Legacy**: JNDI `jdbc/PlantsByWebSphereMySQLDataSource`
-- **Spring Boot**: Direct JDBC connection
+- **Console**: `make mysql-console` (direct MySQL CLI access)
 
-## Architecture Notes
+**How applications connect:**
+- **Legacy**: JNDI `jdbc/PlantsByWebSphereMySQLDataSource`
+- **Spring Boot**: Direct JDBC via Spring Boot configuration
+
+## Architecture
 
 **Legacy (Java EE 6)**:
 - WebSphere Liberty runtime with JSP 2.3, EJB Lite 3.2, JSF 2.2, JPA 2.1
@@ -42,12 +53,52 @@ Plants by WebSphere - Legacy Java EE 6 plant store eCommerce demo with modernize
 **Modern (Spring Boot)**:
 - Spring Boot 3.5.6 with Java 21, JDBC templates, Mustache views
 - Single module with REST controllers and direct database access
-- Entry: REST controllers → JDBC services → domain objects
+- Package-by-feature structure: `catalog/`, `promo/`, `health/`, `domain/`
+- Entry: REST controllers → repositories → domain objects
 
-## Essential Commands
+## Available Commands
 
-- **`make restart`** - Rebuild and restart BOTH applications via Docker Compose (run from project root)
-- `docker-compose logs -f app` - View legacy application logs
-- `docker-compose logs -f spring-boot-pbw` - View Spring Boot application logs
-- `docker-compose down` - Stop all containers
-- `cd spring-boot-pbw && ./mvnw test` - Run Spring Boot tests (for development/testing only)
+Run `make` (without arguments) to see all available commands with descriptions.
+
+**Most used:**
+```bash
+make restart        # Rebuild and restart both applications
+make test          # Run all tests
+make logs          # View logs from both applications
+make clean         # Clean Maven artifacts and Docker resources
+```
+
+**Other commands:**
+```bash
+make quick-restart  # Restart without rebuilding
+make reset-db      # Reset database only
+make mysql-console # Connect to MySQL CLI
+make stop          # Stop all containers
+```
+
+## Development Workflow
+
+1. **Make code changes** in either legacy or Spring Boot modules
+2. **Run tests**: `make test` (or `cd spring-boot-pbw && ./mvnw test` for Spring Boot only)
+3. **Manual testing**: `make restart` to rebuild and test in Docker
+4. **View logs**: `make logs` to debug issues
+5. **Commit** when tests pass and manual testing confirms the changes work
+
+## Spring Boot Package Structure
+
+The Spring Boot application uses **package-by-feature** organization:
+
+```
+it.xpug.pbw/
+├── catalog/          # Product browsing, images
+│   ├── ProductController.java
+│   ├── ProductRepository.java
+│   ├── ImageController.java
+│   └── ImageRepository.java
+├── promo/            # Promotional landing page
+│   └── PromoController.java
+├── health/           # Health checks
+│   └── HealthController.java
+└── domain/           # Shared domain models
+    └── Product.java
+```
