@@ -1,6 +1,6 @@
 // ABOUTME: Acceptance test for product detail page functionality
 // ABOUTME: Integration test that verifies the full product page rendering with database access
-package it.xpug.pbw.catalog;
+package it.xpug.pbw.acceptance;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
