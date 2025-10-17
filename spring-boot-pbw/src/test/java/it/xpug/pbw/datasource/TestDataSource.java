@@ -10,12 +10,12 @@ import javax.sql.DataSource;
 public class TestDataSource {
 
     /**
-     * Creates a DataSource configured with the same settings as application.properties
-     * @return DataSource for the plantsdb test database
+     * Creates a DataSource configured for the dedicated test database
+     * @return DataSource for the plantsdb_test database
      */
     public static DataSource createDataSource() {
         MysqlDataSource dataSource = new MysqlDataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/plantsdb");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/plantsdb_test");
         dataSource.setUser("pbwuser");
         dataSource.setPassword("pbwpass");
         return dataSource;

@@ -17,7 +17,7 @@ help:
 	@echo ""
 	@echo "  make quick-restart  - Restart without rebuilding (preserves data)"
 	@echo ""
-	@echo "  make reset-db       - Reset database only (keeps app running)"
+	@echo "  make reset-db       - Reset BOTH databases (plantsdb + plantsdb_test)"
 	@echo ""
 	@echo "  make mysql-console  - Connect to MySQL console"
 	@echo ""
@@ -51,13 +51,16 @@ quick-restart:
 	docker-compose down
 	docker-compose up -d
 
-# Reset database only (keeps app running)
+# Reset BOTH databases (plantsdb and plantsdb_test)
 .PHONY: reset-db
 reset-db:
+	@echo "Resetting both plantsdb and plantsdb_test databases..."
 	docker-compose stop mysql
 	docker-compose rm -f mysql
 	docker volume rm app-modernization-plants-by-websphere-jee6_mysql_data || true
 	docker-compose up -d mysql --build
+	@echo ""
+	@echo "✅ Both databases reset successfully!"
 
 .PHONY: mysql-console
 mysql-console:

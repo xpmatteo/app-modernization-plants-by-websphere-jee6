@@ -12,7 +12,10 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./docker/mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./docker/mariadb/schema.sql:/schema.sql
+      - ./docker/mariadb/data.sql:/data.sql
+      - ./docker/mariadb/init.sql:/docker-entrypoint-initdb.d/01-init.sql
+      - ./docker/mariadb/init-test.sql:/docker-entrypoint-initdb.d/02-init-test.sql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 20s
