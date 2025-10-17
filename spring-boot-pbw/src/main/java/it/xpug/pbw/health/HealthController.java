@@ -1,6 +1,6 @@
 // ABOUTME: Health check controller for Spring Boot Plants by WebSphere application
 // ABOUTME: Provides /ready endpoint to check database connectivity and application readiness
-package it.xpug.pbw.controller;
+package it.xpug.pbw.health;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

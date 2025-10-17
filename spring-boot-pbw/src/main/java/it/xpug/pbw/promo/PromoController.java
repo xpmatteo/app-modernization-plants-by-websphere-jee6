@@ -1,6 +1,6 @@
 // ABOUTME: Controller for the promotional/landing page featuring plant specials and tips
 // ABOUTME: Handles the main promo page display and navigation to product details
-package it.xpug.pbw.controller;
+package it.xpug.pbw.promo;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

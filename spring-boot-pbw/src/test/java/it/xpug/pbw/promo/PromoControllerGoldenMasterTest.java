@@ -1,6 +1,6 @@
 // ABOUTME: Golden master test for the promotional landing page HTML output
 // ABOUTME: Ensures no regressions in the rendered HTML content of the promo page
-package it.xpug.pbw.controller;
+package it.xpug.pbw.promo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
