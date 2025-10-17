@@ -2,20 +2,25 @@
 // ABOUTME: Tests JDBC queries for fetching product data from INVENTORY table
 package it.xpug.pbw.catalog;
 
+import it.xpug.pbw.datasource.TestDataSource;
 import it.xpug.pbw.domain.Product;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
 public class ProductRepositoryTest {
 
-    @Autowired
     private ProductRepository productRepository;
+
+    @BeforeEach
+    public void setUp() {
+        JdbcTemplate jdbcTemplate = TestDataSource.createJdbcTemplate();
+        productRepository = new ProductRepository(jdbcTemplate);
+    }
 
     @Test
     public void shouldFindBonsaiTreeByInventoryId() {
