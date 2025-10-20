@@ -38,7 +38,7 @@ public class ProductControllerTest {
         mockMvc.perform(get("/product").param("itemID", "T0003"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("product"))
-                .andExpect(model().attributeExists("product"))
+                .andExpect(model().attribute("product", bonsai))
                 .andExpect(model().attribute("title", "Plants By WebSphere Product Detail"));
     }
 
