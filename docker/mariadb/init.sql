@@ -3,3 +3,4 @@
 
 SOURCE /schema.sql;
 SOURCE /data.sql;
+SOURCE /images.sql;
