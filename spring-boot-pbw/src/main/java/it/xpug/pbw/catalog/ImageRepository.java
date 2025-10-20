@@ -5,6 +5,8 @@ package it.xpug.pbw.catalog;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public class ImageRepository {
 
@@ -17,19 +19,20 @@ public class ImageRepository {
     /**
      * Get image bytes for a product from the INVENTORY table
      * @param inventoryId The product inventory ID (e.g., "T0003")
-     * @return byte array of image data, or null if not found or no image
+     * @return Optional containing byte array of image data, or empty if not found or no image
      */
-    public byte[] getImageBytes(String inventoryId) {
+    public Optional<byte[]> getImageBytes(String inventoryId) {
         if (inventoryId == null) {
-            return null;
+            return Optional.empty();
         }
 
         String sql = "SELECT IMGBYTES FROM INVENTORY WHERE INVENTORYID = ?";
 
         try {
-            return jdbcTemplate.queryForObject(sql, byte[].class, inventoryId);
+            byte[] imageBytes = jdbcTemplate.queryForObject(sql, byte[].class, inventoryId);
+            return Optional.ofNullable(imageBytes);
         } catch (org.springframework.dao.EmptyResultDataAccessException e) {
-            return null;
+            return Optional.empty();
         }
     }
 }

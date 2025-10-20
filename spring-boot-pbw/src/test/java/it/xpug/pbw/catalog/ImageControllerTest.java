@@ -8,6 +8,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Optional;
+
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -25,7 +27,7 @@ public class ImageControllerTest {
     public void shouldReturnImageBytesForValidProduct() throws Exception {
         // Arrange: Mock repository to return image bytes
         byte[] mockImageBytes = new byte[]{1, 2, 3, 4, 5}; // Fake image data
-        when(imageRepository.getImageBytes("T0003")).thenReturn(mockImageBytes);
+        when(imageRepository.getImageBytes("T0003")).thenReturn(Optional.of(mockImageBytes));
 
         // Act & Assert
         mockMvc.perform(get("/servlet/ImageServlet")
@@ -38,8 +40,8 @@ public class ImageControllerTest {
 
     @Test
     public void shouldReturn404WhenImageNotFound() throws Exception {
-        // Arrange: Mock repository to return null (no image)
-        when(imageRepository.getImageBytes("INVALID")).thenReturn(null);
+        // Arrange: Mock repository to return empty Optional
+        when(imageRepository.getImageBytes("INVALID")).thenReturn(Optional.empty());
 
         // Act & Assert
         mockMvc.perform(get("/servlet/ImageServlet")
@@ -60,7 +62,7 @@ public class ImageControllerTest {
     public void shouldWorkWithoutActionParameter() throws Exception {
         // Arrange: action parameter is optional, defaults to "getimage"
         byte[] mockImageBytes = new byte[]{10, 20, 30};
-        when(imageRepository.getImageBytes("V0006")).thenReturn(mockImageBytes);
+        when(imageRepository.getImageBytes("V0006")).thenReturn(Optional.of(mockImageBytes));
 
         // Act & Assert
         mockMvc.perform(get("/servlet/ImageServlet")

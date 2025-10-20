@@ -28,14 +28,11 @@ public class ImageController {
             @RequestParam(required = false, defaultValue = "getimage") String action,
             @RequestParam String inventoryID) {
 
-        byte[] imageBytes = imageRepository.getImageBytes(inventoryID);
-
-        if (imageBytes == null || imageBytes.length == 0) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_JPEG)
-                .body(imageBytes);
+        return imageRepository.getImageBytes(inventoryID)
+                .filter(bytes -> bytes.length > 0)
+                .map(bytes -> ResponseEntity.ok()
+                        .contentType(MediaType.IMAGE_JPEG)
+                        .body(bytes))
+                .orElse(ResponseEntity.notFound().build());
     }
 }
