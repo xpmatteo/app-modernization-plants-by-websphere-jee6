@@ -102,3 +102,4 @@ it.xpug.pbw/
 └── domain/           # Shared domain models
     └── Product.java
 ```
+- use AssertJ for assertions, unless using MockMvc

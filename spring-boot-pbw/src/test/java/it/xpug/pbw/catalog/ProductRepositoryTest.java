@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 public class ProductRepositoryTest {
 
@@ -31,15 +31,15 @@ public class ProductRepositoryTest {
         Optional<Product> result = productRepository.findByInventoryId(inventoryId);
 
         // Assert
-        assertTrue(result.isPresent(), "Product should be found");
+        assertThat(result).isPresent();
         Product product = result.get();
-        assertEquals("T0003", product.getInventoryId());
-        assertEquals("Bonsai", product.getName());
-        assertEquals("Tabletop Fun", product.getHeading());
-        assertEquals(30.00f, product.getPrice(), 0.01f);
-        assertEquals("0.5 gallon mature tree", product.getPkginfo());
-        assertEquals(2, product.getCategory()); // Trees category
-        assertTrue(product.getDescription().contains("miniature replicas"));
+        assertThat(product.getInventoryId()).isEqualTo("T0003");
+        assertThat(product.getName()).isEqualTo("Bonsai");
+        assertThat(product.getHeading()).isEqualTo("Tabletop Fun");
+        assertThat(product.getPrice()).isCloseTo(30.00f, within(0.01f));
+        assertThat(product.getPkginfo()).isEqualTo("0.5 gallon mature tree");
+        assertThat(product.getCategory()).isEqualTo(2); // Trees category
+        assertThat(product.getDescription()).contains("miniature replicas");
     }
 
     @Test
@@ -51,13 +51,13 @@ public class ProductRepositoryTest {
         Optional<Product> result = productRepository.findByInventoryId(inventoryId);
 
         // Assert
-        assertTrue(result.isPresent(), "Product should be found");
+        assertThat(result).isPresent();
         Product product = result.get();
-        assertEquals("V0006", product.getInventoryId());
-        assertEquals("Strawberries", product.getName());
-        assertEquals(3.50f, product.getPrice(), 0.01f);
-        assertEquals("1 pkt. (50 seeds)", product.getPkginfo());
-        assertEquals(1, product.getCategory()); // Fruits & Vegetables category
+        assertThat(product.getInventoryId()).isEqualTo("V0006");
+        assertThat(product.getName()).isEqualTo("Strawberries");
+        assertThat(product.getPrice()).isCloseTo(3.50f, within(0.01f));
+        assertThat(product.getPkginfo()).isEqualTo("1 pkt. (50 seeds)");
+        assertThat(product.getCategory()).isEqualTo(1); // Fruits & Vegetables category
     }
 
     @Test
@@ -69,7 +69,7 @@ public class ProductRepositoryTest {
         Optional<Product> result = productRepository.findByInventoryId(inventoryId);
 
         // Assert
-        assertFalse(result.isPresent(), "Should return empty Optional for non-existent product");
+        assertThat(result).isEmpty();
     }
 
     @Test
@@ -78,8 +78,7 @@ public class ProductRepositoryTest {
         String inventoryId = null;
 
         // Act & Assert
-        assertThrows(NullPointerException.class, () -> {
-            productRepository.findByInventoryId(inventoryId);
-        }, "Should throw NullPointerException for null inventoryId");
+        assertThatThrownBy(() -> productRepository.findByInventoryId(inventoryId))
+                .isInstanceOf(NullPointerException.class);
     }
 }

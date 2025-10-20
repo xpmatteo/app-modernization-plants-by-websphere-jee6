@@ -14,7 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -62,16 +62,17 @@ public class PromoPageGoldenMasterTest {
             Files.write(goldenMasterPath, normalizedActual.getBytes());
 
             // Fail the test to indicate that the golden master was created
-            throw new AssertionError("Golden master file created at: " + goldenMasterPath +
+            fail("Golden master file created at: " + goldenMasterPath +
                     ". Please review the content and run the test again.");
         }
 
         String expectedHtml = Files.readString(goldenMasterPath);
         String normalizedExpected = normalizeHtml(expectedHtml);
 
-        assertEquals(normalizedExpected, normalizedActual,
-                "HTML output does not match golden master. " +
-                "If this change is intentional, delete the golden master file and run the test again to regenerate it.");
+        assertThat(normalizedActual)
+                .as("HTML output does not match golden master. " +
+                    "If this change is intentional, delete the golden master file and run the test again to regenerate it.")
+                .isEqualTo(normalizedExpected);
     }
 
     private String normalizeHtml(String html) {
