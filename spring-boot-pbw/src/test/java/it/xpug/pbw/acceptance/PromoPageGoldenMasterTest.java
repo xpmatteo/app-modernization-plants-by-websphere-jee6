@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PromoController.class)
-public class PromoControllerGoldenMasterTest {
+public class PromoPageGoldenMasterTest {
 
     @Autowired
     private MockMvc mockMvc;
