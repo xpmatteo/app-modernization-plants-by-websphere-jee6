@@ -42,6 +42,35 @@ Build order matters: pbw-lib → pbw-web → pbw-ear
 
 ## Common Development Commands
 
+### Running Locally with Docker Compose (Recommended for Development)
+
+```bash
+# Build the application
+mvn clean package
+
+# Start all services (MariaDB + Liberty)
+docker-compose up -d
+
+# View logs
+docker-compose logs -f liberty
+
+# Stop all services
+docker-compose down
+
+# Stop and remove volumes (clean database)
+docker-compose down -v
+```
+
+**Application will be available at:**
+- http://localhost:9080/ (main application)
+- http://localhost:9443/ (HTTPS)
+
+**Database credentials (configured in docker-compose.yml):**
+- Host: localhost:3306
+- Database: plantsdb
+- User: dbuser
+- Password: dbpass
+
 ### Building the Application
 
 ```bash
@@ -69,7 +98,7 @@ mvn test -pl pbw-web
 mvn test
 ```
 
-### Deployment Scripts
+### Deployment Scripts (For Kubernetes/OpenShift)
 
 ```bash
 # Create Kubernetes secrets for database credentials
@@ -127,6 +156,7 @@ Pipelines use Maven, Docker, and kubectl containers in Jenkins pod templates.
 
 ## Legacy Considerations
 
-- **Java Version**: Source 1.6, Target 1.8 (legacy compatibility)
-- **Endorsed APIs**: Build expects WAS_HOME environment variable for endorsed_apis path
+- **Java Version**: Upgraded to Source 1.8, Target 1.8 (originally 1.6) for modern Java compatibility
+- **Maven Plugins**: Updated to modern versions (maven-war-plugin 3.3.2, maven-compiler-plugin 3.8.0)
 - **Database Flexibility**: Can switch between MySQL and MariaDB by uncommenting respective datasource blocks in server.xml
+- **Liberty Base Image**: Uses `icr.io/appcafe/websphere-liberty:kernel-java8-openj9-ubi` (modern replacement for deprecated `websphere-liberty:kernel`)

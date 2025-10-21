@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  db:
+    image: mariadb:10.3
+    container_name: plantsdb
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: plantsdb
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: dbpass
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker/mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - db-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - pbw-network
+
+  liberty:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pbw-liberty
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: dbuser
+      DB_PASSWORD: dbpass
+    ports:
+      - "9080:9080"
+      - "9443:9443"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - pbw-network
+
+volumes:
+  db-data:
+
+networks:
+  pbw-network:
+    driver: bridge

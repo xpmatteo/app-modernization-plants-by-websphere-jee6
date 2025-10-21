@@ -20,12 +20,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.0</version>
 				<configuration>
-					<target>1.6</target>
-					<source>1.6</source>
-					<compilerArguments>
-						<endorseddirs>${WAS_HOME}/endorsed_apis</endorseddirs>
-					</compilerArguments>
+					<target>1.8</target>
+					<source>1.8</source>
 				</configuration>
 			</plugin>
 			<plugin>

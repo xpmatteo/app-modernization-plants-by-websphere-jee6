@@ -1,5 +1,5 @@
 #IMAGE: Get the base image for Liberty
-FROM websphere-liberty:kernel
+FROM icr.io/appcafe/websphere-liberty:kernel-java8-openj9-ubi
 
 
 # Add MySQL  Type 4 JDBC driver
