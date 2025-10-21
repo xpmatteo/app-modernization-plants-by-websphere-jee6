@@ -25,18 +25,18 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Vector;
 
-import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
+import jakarta.ejb.EJB;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
 
 import com.ibm.websphere.samples.pbw.ejb.CatalogMgr;
 import com.ibm.websphere.samples.pbw.ejb.ShoppingCartBean;
 //import com.ibm.websphere.samples.pbw.ejb.ShoppingCartBean;
 import com.ibm.websphere.samples.pbw.jpa.Inventory;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 /**
  * A combination JSF action bean and backing bean for the shopping web

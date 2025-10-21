@@ -19,10 +19,10 @@ package com.ibm.websphere.samples.pbw.war;
 import java.io.Serializable;
 import java.util.Collection;
 
-import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.application.Application;
-import javax.faces.context.FacesContext;
+import jakarta.ejb.EJB;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.application.Application;
+import jakarta.faces.context.FacesContext;
 
 import com.ibm.websphere.samples.pbw.ejb.CustomerMgr;
 import com.ibm.websphere.samples.pbw.ejb.MailerAppException;
@@ -33,9 +33,9 @@ import com.ibm.websphere.samples.pbw.jpa.Customer;
 import com.ibm.websphere.samples.pbw.jpa.Inventory;
 import com.ibm.websphere.samples.pbw.utils.Util;
 
-//import javax.inject.Inject;
-import javax.inject.Inject;
-import javax.inject.Named;
+//import jakarta.inject.Inject;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 /**
  * Provides a combination of JSF action and backing bean support for the account
@@ -114,9 +114,8 @@ public class AccountBean implements Serializable {
 
 	public String performCheckoutFinal() {
 		FacesContext context = FacesContext.getCurrentInstance();
-		Application app = context.getApplication();
-		ShoppingBean shopping = (ShoppingBean) app.createValueBinding(
-				"#{shopping}").getValue(context);
+		ShoppingBean shopping = context.getApplication()
+				.evaluateExpressionGet(context, "#{shopping}", ShoppingBean.class);
 
 		shopping.setShippingCost(Util.getShippingMethodPrice(orderInfo
 				.getShippingMethod()));
@@ -126,8 +125,8 @@ public class AccountBean implements Serializable {
 
 	public String performCompleteCheckout() {
 		FacesContext context = FacesContext.getCurrentInstance();
-		Application app = context.getApplication();
-		app.createValueBinding("#{shopping}").getValue(context);
+		context.getApplication()
+				.evaluateExpressionGet(context, "#{shopping}", ShoppingBean.class);
 
 		// persist the order
 		OrderInfo oi = new OrderInfo(shoppingCart.createOrder(

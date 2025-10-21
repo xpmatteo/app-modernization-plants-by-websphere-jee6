@@ -17,13 +17,13 @@
 package com.ibm.websphere.samples.pbw.ejb;
 import java.util.Collection;
 
-import javax.annotation.security.RolesAllowed;
-import javax.ejb.FinderException;
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.ejb.FinderException;
+import jakarta.ejb.Stateless;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 
 import com.ibm.websphere.samples.pbw.jpa.BackOrder;
 import com.ibm.websphere.samples.pbw.jpa.Inventory;

@@ -17,9 +17,9 @@
 
 package pagecode;
 
-import javax.faces.component.html.HtmlSelectBooleanCheckbox;
-import javax.faces.component.html.HtmlForm;
-import javax.faces.component.html.HtmlCommandButton;
+import jakarta.faces.component.html.HtmlSelectBooleanCheckbox;
+import jakarta.faces.component.html.HtmlForm;
+import jakarta.faces.component.html.HtmlCommandButton;
 
 /**
  * @author knutson

@@ -16,9 +16,9 @@
 //
 package com.ibm.websphere.samples.pbw.war;
 
-import javax.ejb.CreateException;
-import javax.ejb.EJB;
-import javax.ejb.FinderException;
+import jakarta.ejb.CreateException;
+import jakarta.ejb.EJB;
+import jakarta.ejb.FinderException;
 
 import com.ibm.websphere.samples.pbw.ejb.MailerAppException;
 import com.ibm.websphere.samples.pbw.ejb.MailerBean;

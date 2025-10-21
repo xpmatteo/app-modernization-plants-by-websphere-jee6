@@ -18,10 +18,10 @@ package com.ibm.websphere.samples.pbw.ejb;
 import java.util.Collection;
 import java.util.Iterator;
 
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import jakarta.ejb.Stateless;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 
 import com.ibm.websphere.samples.pbw.jpa.Supplier;
 import com.ibm.websphere.samples.pbw.utils.Util;

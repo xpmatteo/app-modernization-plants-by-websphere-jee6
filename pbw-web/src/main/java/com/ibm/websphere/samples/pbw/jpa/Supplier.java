@@ -16,11 +16,11 @@
 //
 package com.ibm.websphere.samples.pbw.jpa;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
 
 
 /**
@@ -109,9 +109,9 @@ public class Supplier {
      * @param zip
      * @param phone
      * @param url
-     * @throws javax.ejb.CreateException
+     * @throws jakarta.ejb.CreateException
      */
-    public Supplier(String supplierID, String name, String street, String city, String state, String zip, String phone, String url) throws javax.ejb.CreateException {
+    public Supplier(String supplierID, String name, String street, String city, String state, String zip, String phone, String url) throws jakarta.ejb.CreateException {
         this.setSupplierID(supplierID);
         this.setName(name);
         this.setStreet(street);

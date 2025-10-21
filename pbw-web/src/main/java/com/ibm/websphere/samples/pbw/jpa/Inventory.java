@@ -19,12 +19,12 @@ package com.ibm.websphere.samples.pbw.jpa;
 //import com.ibm.websphere.samples.pbw.ejb.BackOrderStock;
 //import com.ibm.websphere.samples.pbw.ejb.BackOrderStockHome;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 
 import com.ibm.websphere.samples.pbw.utils.Util;

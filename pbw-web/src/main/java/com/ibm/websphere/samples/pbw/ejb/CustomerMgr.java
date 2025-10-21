@@ -16,10 +16,10 @@
 //
 package com.ibm.websphere.samples.pbw.ejb;
 
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
-import javax.persistence.PersistenceContext;
+import jakarta.ejb.Stateless;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.LockModeType;
+import jakarta.persistence.PersistenceContext;
 
 import com.ibm.websphere.samples.pbw.jpa.Customer;
 import com.ibm.websphere.samples.pbw.utils.Util;

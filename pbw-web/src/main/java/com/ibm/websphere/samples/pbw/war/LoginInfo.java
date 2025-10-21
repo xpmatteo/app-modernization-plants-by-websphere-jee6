@@ -17,8 +17,8 @@
 
 package com.ibm.websphere.samples.pbw.war;
 
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 /**
  * A JSF backing bean used to store information for the login web page.  It is

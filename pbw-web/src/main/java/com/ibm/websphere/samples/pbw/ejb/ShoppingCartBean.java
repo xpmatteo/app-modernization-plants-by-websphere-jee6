@@ -18,15 +18,15 @@ package com.ibm.websphere.samples.pbw.ejb;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.ejb.Stateful;
-import javax.ejb.StatefulTimeout;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
-//import javax.enterprise.context.SessionScoped;
-//import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
-import javax.persistence.PersistenceContext;
+import jakarta.ejb.Stateful;
+import jakarta.ejb.StatefulTimeout;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.inject.Named;
+//import jakarta.enterprise.context.SessionScoped;
+//import jakarta.inject.Named;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.LockModeType;
+import jakarta.persistence.PersistenceContext;
 
 import com.ibm.websphere.samples.pbw.jpa.BackOrder;
 import com.ibm.websphere.samples.pbw.jpa.Customer;

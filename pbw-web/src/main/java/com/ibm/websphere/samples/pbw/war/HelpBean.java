@@ -17,8 +17,8 @@
 
 package com.ibm.websphere.samples.pbw.war;
 
-import javax.ejb.EJB;
-import javax.inject.Named;
+import jakarta.ejb.EJB;
+import jakarta.inject.Named;
 
 import com.ibm.websphere.samples.pbw.ejb.ResetDBBean;
 import com.ibm.websphere.samples.pbw.utils.Util;

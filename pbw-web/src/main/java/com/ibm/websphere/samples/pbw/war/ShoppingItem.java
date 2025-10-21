@@ -19,7 +19,7 @@ package com.ibm.websphere.samples.pbw.war;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.Min;
+import jakarta.validation.constraints.Min;
 
 import com.ibm.websphere.samples.pbw.jpa.BackOrder;
 import com.ibm.websphere.samples.pbw.jpa.Inventory;
