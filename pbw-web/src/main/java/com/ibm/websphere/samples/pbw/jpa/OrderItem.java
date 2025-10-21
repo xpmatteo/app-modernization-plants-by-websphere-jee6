@@ -25,6 +25,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 import com.ibm.websphere.samples.pbw.utils.Util;
 
@@ -96,6 +97,7 @@ public class OrderItem
 	private int category;
 	private int quantity;
 	private String sellDate;
+	@Transient
 	private String inventoryId;
 
 	@ManyToOne
