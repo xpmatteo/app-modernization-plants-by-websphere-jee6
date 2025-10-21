@@ -104,8 +104,7 @@ public class AdminServlet extends HttpServlet {
 		if ((admintype == null) || (admintype.equals(""))) {
 			// Invalid Admin
 			requestDispatch(getServletConfig().getServletContext(), req, resp, Util.PAGE_ADMINHOME);
-		}
-		if (admintype.equals(Util.ADMIN_BACKORDER)) {
+		} else if (admintype.equals(Util.ADMIN_BACKORDER)) {
 			performBackOrder(req, resp);
 		} else if (admintype.equals(Util.ADMIN_SUPPLIERCFG)) {
 			performSupplierConfig(req, resp);
