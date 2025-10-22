@@ -11,6 +11,7 @@
 
 	<modules>
 		<module>pbw-web</module>
+		<module>pbw-e2e</module>
 	</modules>
 
 	<properties>
