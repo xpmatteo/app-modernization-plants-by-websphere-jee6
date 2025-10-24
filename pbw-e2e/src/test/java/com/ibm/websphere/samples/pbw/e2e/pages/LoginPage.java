@@ -82,10 +82,18 @@ public class LoginPage {
      */
     public String getErrorMessage() {
         // JSF outputs error messages in the outputText with the message binding
-        Locator errorLocator = page.locator("span[style*='color'][style*='ff0033']");
-        if (errorLocator.isVisible()) {
-            return errorLocator.textContent();
+        // Check for red error messages (ff0033)
+        Locator redErrorLocator = page.locator("span[style*='color'][style*='ff0033'], span[style*='color'][style*='FF0033']");
+        if (redErrorLocator.count() > 0 && redErrorLocator.first().isVisible()) {
+            return redErrorLocator.first().textContent();
         }
+
+        // Check for orange/yellow validation messages (ff9933)
+        Locator orangeErrorLocator = page.locator("span[style*='color'][style*='ff9933'], span[style*='color'][style*='FF9933']");
+        if (orangeErrorLocator.count() > 0 && orangeErrorLocator.first().isVisible()) {
+            return orangeErrorLocator.first().textContent();
+        }
+
         return "";
     }
 

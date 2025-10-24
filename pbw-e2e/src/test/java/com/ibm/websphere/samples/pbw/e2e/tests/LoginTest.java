@@ -205,4 +205,50 @@ public class LoginTest {
                 .as("Page title should indicate promo page after successful login")
                 .contains("Plants By WebSphere Promo");
     }
+
+    @Test
+    @Order(4)
+    @DisplayName("Login fails with invalid credentials")
+    void testLoginWithInvalidCredentials() {
+        // Navigate to login page
+        loginPage.navigate(TestConfig.getBaseUrl());
+
+        // Verify we're on the login page
+        assertThat(loginPage.isOnLoginPage())
+                .as("Should be on login page")
+                .isTrue();
+
+        // Attempt to log in with invalid credentials
+        // Use password that meets validation rules (6-10 chars) but is wrong
+        loginPage.fillEmail("invalid@example.com");
+        loginPage.fillPassword("wrong123");
+
+        // Click the sign in button
+        loginPage.clickSignIn();
+
+        // Wait for the page to process the request
+        page.waitForLoadState();
+
+        // Take a screenshot for debugging
+        page.screenshot(new Page.ScreenshotOptions().setPath(java.nio.file.Paths.get("target/login-failed.png")));
+        System.out.println("Screenshot saved to target/login-failed.png");
+
+        // Verify we're still on the login page (not redirected to promo page)
+        assertThat(loginPage.isOnLoginPage())
+                .as("Should remain on login page after failed login")
+                .isTrue();
+
+        // Verify an error message is displayed
+        String errorMessage = loginPage.getErrorMessage();
+        assertThat(errorMessage)
+                .as("Error message should be displayed for invalid credentials")
+                .isNotEmpty();
+
+        // Verify the user is NOT logged in (no "Logged in as:" text)
+        assertThat(page.locator("text=/Logged in as:/i").isVisible())
+                .as("Should not show 'Logged in as:' after failed login")
+                .isFalse();
+
+        System.out.println("Login correctly rejected with error: " + errorMessage);
+    }
 }
