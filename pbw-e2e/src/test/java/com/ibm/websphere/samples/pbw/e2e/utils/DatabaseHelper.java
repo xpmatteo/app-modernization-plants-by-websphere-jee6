@@ -14,8 +14,6 @@ import java.net.http.HttpResponse;
  */
 public class DatabaseHelper {
 
-    private static final HttpClient httpClient = HttpClient.newHttpClient();
-
     /**
      * Populate the database with test data via AdminServlet
      */
@@ -52,7 +50,9 @@ public class DatabaseHelper {
             String baseUrl = TestConfig.getBaseUrl();
 
             // Use a client with short timeout for faster failure
+            // Force HTTP/1.1 since the server may not handle HTTP/2 correctly
             HttpClient timeoutClient = HttpClient.newBuilder()
+                    .version(HttpClient.Version.HTTP_1_1)
                     .connectTimeout(java.time.Duration.ofSeconds(3))
                     .build();
 
@@ -64,7 +64,15 @@ public class DatabaseHelper {
 
             HttpResponse<String> response = timeoutClient.send(request, HttpResponse.BodyHandlers.ofString());
             return response.statusCode() == 200;
-        } catch (Exception e) {
+        } catch (java.net.ConnectException | java.net.http.HttpTimeoutException e) {
+            // Expected when application is not running - connection refused or timeout
+            return false;
+        } catch (IOException | InterruptedException e) {
+            // Network issues or thread interruption - log but still return false
+            System.err.println("Warning: Unexpected error checking application readiness: " + e.getMessage());
+            if (e instanceof InterruptedException) {
+                Thread.currentThread().interrupt(); // Restore interrupted status
+            }
             return false;
         }
     }
