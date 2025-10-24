@@ -50,12 +50,19 @@ public class DatabaseHelper {
     public static boolean isApplicationReady() {
         try {
             String baseUrl = TestConfig.getBaseUrl();
+
+            // Use a client with short timeout for faster failure
+            HttpClient timeoutClient = HttpClient.newBuilder()
+                    .connectTimeout(java.time.Duration.ofSeconds(3))
+                    .build();
+
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(baseUrl))
+                    .timeout(java.time.Duration.ofSeconds(3))
                     .GET()
                     .build();
 
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = timeoutClient.send(request, HttpResponse.BodyHandlers.ofString());
             return response.statusCode() == 200;
         } catch (Exception e) {
             return false;

@@ -47,6 +47,7 @@
     </dependencies>
 
     <build>
+        <testSourceDirectory>src/test/java</testSourceDirectory>
         <plugins>
             <!-- Maven Surefire Plugin for running tests -->
             <plugin>
@@ -54,8 +55,10 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.2</version>
                 <configuration>
-                    <!-- Skip unit tests in this module, we only have E2E tests -->
-                    <skipTests>true</skipTests>
+                    <systemPropertyVariables>
+                        <!-- Base URL for the application - can be overridden via -D -->
+                        <app.baseUrl>${app.baseUrl}</app.baseUrl>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
 
