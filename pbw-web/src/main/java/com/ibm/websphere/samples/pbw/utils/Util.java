@@ -178,7 +178,7 @@ public class Util {
     static public String[] getFullShippingMethodStrings() {
         String[] shippingMethods = new String[SHIPPING_METHOD_STRINGS.length];
         for (int i = 0; i < shippingMethods.length; i++) {
-            shippingMethods[i] = SHIPPING_METHOD_STRINGS[i] + " " + SHIPPING_METHOD_TIMES[i] + " " + NumberFormat.getCurrencyInstance(java.util.Locale.US).format(new Float(SHIPPING_METHOD_PRICES[i]));
+            shippingMethods[i] = SHIPPING_METHOD_STRINGS[i] + " " + SHIPPING_METHOD_TIMES[i] + " " + NumberFormat.getCurrencyInstance(java.util.Locale.US).format(SHIPPING_METHOD_PRICES[i]);
         }
         return shippingMethods;
     }

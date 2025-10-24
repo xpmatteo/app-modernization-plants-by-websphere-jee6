@@ -40,13 +40,13 @@ private Hashtable<String, Integer> table = null;
    /** Add the item to the shopping cart. */
    public void addItem(Inventory si)
    {
-      table.put(si.getID(), new Integer(si.getQuantity()));
+      table.put(si.getID(), Integer.valueOf(si.getQuantity()));
    }
 
    /** Update the item in the shopping cart. */
    public void updateItem(Inventory si)
    {
-      table.put(si.getID(), new Integer(si.getQuantity()));
+      table.put(si.getID(), Integer.valueOf(si.getQuantity()));
    }
 
    /** Remove the item from the shopping cart. */

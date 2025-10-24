@@ -69,7 +69,7 @@ public class ProductBean implements Serializable {
      
      public String getPrice () {
           return NumberFormat.getCurrencyInstance (Locale.US).format
-               (new Float (this.inventory.getPrice()));
+               (this.inventory.getPrice());
      }
      public int getQuantity () {
           return this.quantity;

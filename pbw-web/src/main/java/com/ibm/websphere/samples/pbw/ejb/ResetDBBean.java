@@ -97,12 +97,12 @@ public class ResetDBBean {
 	                String descr = fields[3];
 	                String pkginfo = fields[4];
 	                String image = fields[5];
-	                float price = new Float(fields[6]).floatValue();
-	                float cost = new Float(fields[7]).floatValue();
-	                int quantity = new Integer(fields[8]).intValue();
-	                int category = new Integer(fields[9]).intValue();
+	                float price = Float.parseFloat(fields[6]);
+	                float cost = Float.parseFloat(fields[7]);
+	                int quantity = Integer.parseInt(fields[8]);
+	                int category = Integer.parseInt(fields[9]);
 	                String notes = fields[10];
-	                boolean isPublic = new Boolean(fields[11]).booleanValue();
+	                boolean isPublic = Boolean.parseBoolean(fields[11]);
 	                Util.debug("Populating INVENTORY with following values:  ");
 	                Util.debug(fields[0]);
 	                Util.debug(fields[1]);
@@ -238,8 +238,8 @@ public class ResetDBBean {
 	            for (int index = 0; index < values.length; index++) {
 	                String[] fields = Util.readTokens(values[index], "|");
 	                String inventoryID = fields[0];
-	                int amountToOrder = new Integer(fields[1]).intValue();
-	                int maximumItems = new Integer(fields[2]).intValue();
+	                int amountToOrder = Integer.parseInt(fields[1]);
+	                int maximumItems = Integer.parseInt(fields[2]);
 	                Util.debug("Populating BACKORDER with following values:  ");
 	                Util.debug(inventoryID);
 	                Util.debug("amountToOrder -> " + amountToOrder);

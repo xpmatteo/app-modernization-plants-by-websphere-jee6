@@ -251,7 +251,7 @@ public class AdminServlet extends HttpServlet {
 					Util.debug("AdminServlet.performBackOrder() - backOrderID = " + backOrderID);
 					String paramquantity = req.getParameter("itemqty");
 					if (paramquantity != null) {
-						int quantity = new Integer(paramquantity).intValue();
+						int quantity = Integer.parseInt(paramquantity);
 						Util.debug("AdminServlet.performBackOrder() - quantity: " + quantity);
 						backOrderStock.setBackOrderQuantity(backOrderID, quantity);
 					}
@@ -298,8 +298,8 @@ public class AdminServlet extends HttpServlet {
 					String invID = backOrderItem.getInventory().getInventoryId();
 					String supplierOrderID = backOrderItem.getSupplierOrderID();
 					String status = backOrderItem.getStatus();
-					String lowDate = new Long(backOrderItem.getLowDate()).toString();
-					String orderDate = new Long(backOrderItem.getOrderDate()).toString();
+					String lowDate = Long.toString(backOrderItem.getLowDate());
+					String orderDate = Long.toString(backOrderItem.getOrderDate());
 					Util.debug("AdminServlet.getBackOrders() - backOrderID = " + backOrderID);
 					Util.debug("AdminServlet.getBackOrders() -    supplierOrderID = " + supplierOrderID);
 					Util.debug("AdminServlet.getBackOrders() -    invID = " + invID);

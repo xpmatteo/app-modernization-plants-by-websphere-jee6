@@ -159,7 +159,7 @@ public class OrderInfo implements java.io.Serializable
 		int i = Calendar.getInstance().get(1);
 		cardExpYears = new String[5];
 		for(int j = 0; j < 5; j++)
-			cardExpYears[j] = (new Integer(i + j)).toString();
+			cardExpYears[j] = Integer.toString(i + j);
 	}
 
 	/**
