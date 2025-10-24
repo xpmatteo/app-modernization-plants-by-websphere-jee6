@@ -174,10 +174,8 @@ public class AccountBean implements Serializable {
 			mailer.createAndSendMail(customer, oi.getID());
 		} catch (MailerAppException e) {
 			System.out.println("MailerAppException:" + e);
-			e.printStackTrace();
 		} catch (Exception e) {
 			System.out.println("Exception during create and send mail :" + e);
-			e.printStackTrace();
 		}
 
 		orderInfo = null;

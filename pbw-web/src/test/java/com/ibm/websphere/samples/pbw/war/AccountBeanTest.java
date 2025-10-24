@@ -111,7 +111,7 @@ class AccountBeanTest {
 	@DisplayName("should store last order number after order creation")
 	void testPerformCompleteCheckout_StoresLastOrderNumber() throws Exception {
 		// When
-		String result = accountBean.performCompleteCheckout();
+		accountBean.performCompleteCheckout();
 
 		// Then
 		assertThat(accountBean.getLastOrderNum()).isEqualTo("ORD-12345");
