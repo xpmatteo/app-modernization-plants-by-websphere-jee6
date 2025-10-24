@@ -121,4 +121,79 @@ public class LoginTest {
                 .as("Sign in button should be visible")
                 .isTrue();
     }
+
+    @Test
+    @Order(3)
+    @DisplayName("User can successfully log in with valid credentials")
+    void testSuccessfulLogin() {
+        // Navigate directly to login page
+        loginPage.navigate(TestConfig.getBaseUrl());
+
+        // Verify we're on the login page
+        assertThat(loginPage.isOnLoginPage())
+                .as("Should be on login page")
+                .isTrue();
+
+        // Take a screenshot BEFORE filling the form
+        page.screenshot(new Page.ScreenshotOptions().setPath(java.nio.file.Paths.get("target/login-before.png")));
+        System.out.println("Screenshot before login saved to target/login-before.png");
+        System.out.println("URL before login: " + page.url());
+
+        // Fill in the login credentials
+        loginPage.fillEmail(TEST_USER_EMAIL);
+        loginPage.fillPassword(TEST_USER_PASSWORD);
+
+        // Take a screenshot AFTER filling but BEFORE clicking
+        page.screenshot(new Page.ScreenshotOptions().setPath(java.nio.file.Paths.get("target/login-filled.png")));
+        System.out.println("Screenshot after filling form saved to target/login-filled.png");
+
+        // Now click the sign in button
+        loginPage.clickSignIn();
+
+        // Wait for navigation to complete (JSF pages may take a moment)
+        page.waitForLoadState();
+
+        // Debug: Print page content to see what's happening
+        System.out.println("Current URL after login: " + page.url());
+        System.out.println("Page title: " + page.title());
+
+        // Take a screenshot for debugging
+        page.screenshot(new Page.ScreenshotOptions().setPath(java.nio.file.Paths.get("target/login-result.png")));
+        System.out.println("Screenshot saved to target/login-result.png");
+
+        // Check for JSF validation errors
+        var validationErrors = page.locator("span[style*='color'][style*='ff0033'], span[style*='color'][style*='FF0033']");
+        if (validationErrors.count() > 0) {
+            System.out.println("Found validation errors:");
+            for (int i = 0; i < validationErrors.count(); i++) {
+                String errorText = validationErrors.nth(i).textContent();
+                if (!errorText.trim().isEmpty()) {
+                    System.out.println("  - " + errorText);
+                }
+            }
+        }
+
+        // Check if there's an error in the page content
+        if (page.title().contains("Error")) {
+            System.out.println("ERROR PAGE DETECTED!");
+            System.out.println("Page content snippet:");
+            System.out.println(page.content().substring(0, Math.min(500, page.content().length())));
+        }
+
+        // Check if there's an error message (for debugging)
+        String errorMessage = loginPage.getErrorMessage();
+        if (!errorMessage.isEmpty()) {
+            throw new AssertionError("Login failed with error: " + errorMessage);
+        }
+
+        // After successful login, we should be redirected to the promo page
+        assertThat(page.url())
+                .as("Should be redirected to promo page after successful login")
+                .contains("promo.jsf");
+
+        // Verify the promo page loaded correctly by checking for the promo form
+        assertThat(page.locator("form[id*='promo']").isVisible())
+                .as("Promo page should be visible after login")
+                .isTrue();
+    }
 }

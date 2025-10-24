@@ -51,7 +51,21 @@ public class LoginPage {
      */
     public void clickSignIn() {
         // The sign in button is an image with alt text "Sign in"
-        page.getByRole(AriaRole.IMG, new Page.GetByRoleOptions().setName("Sign in")).click();
+        // It's wrapped in an h:commandLink which generates a JavaScript onclick handler using MyFaces
+        // JSF requires the onclick JavaScript to be executed properly
+        Locator signInLink = page.locator("a:has(img[alt='Sign in'])");
+
+        // Wait for the link to be ready and for MyFaces JavaScript to load
+        signInLink.waitFor();
+
+        // Wait for MyFaces JavaScript library to be loaded
+        page.waitForFunction("typeof myfaces !== 'undefined' && typeof myfaces.oam !== 'undefined'");
+
+        // Click the link (this will trigger the JSF JavaScript)
+        signInLink.click();
+
+        // Wait for the form submission to complete
+        page.waitForLoadState();
     }
 
     /**

@@ -262,6 +262,9 @@ public class AccountBean implements Serializable {
 	}
 
 	public LoginInfo getLoginInfo() {
+		if (loginInfo == null) {
+			loginInfo = new LoginInfo();
+		}
 		return loginInfo;
 	}
 
