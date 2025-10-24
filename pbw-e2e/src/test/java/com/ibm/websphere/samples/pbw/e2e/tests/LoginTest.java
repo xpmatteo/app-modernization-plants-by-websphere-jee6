@@ -35,6 +35,14 @@ public class LoginTest {
                 new BrowserType.LaunchOptions()
                         .setHeadless(false) // Set to false to see browser during test development
                         .setTimeout(3000) // 3 second timeout
+                        .setArgs(java.util.Arrays.asList(
+                                // Prevent Chrome from showing "controlled by automated software" banner
+                                "--disable-blink-features=AutomationControlled",
+                                // Disable Chrome password manager's "generate password" feature
+                                "--disable-password-generation",
+                                // Disable Chrome's "Save password?" prompt that can block form submission
+                                "--disable-save-password-bubble"
+                        ))
         );
 
         // Check if application is ready
@@ -186,14 +194,15 @@ public class LoginTest {
             throw new AssertionError("Login failed with error: " + errorMessage);
         }
 
-        // After successful login, we should be redirected to the promo page
-        assertThat(page.url())
-                .as("Should be redirected to promo page after successful login")
-                .contains("promo.jsf");
-
-        // Verify the promo page loaded correctly by checking for the promo form
-        assertThat(page.locator("form[id*='promo']").isVisible())
-                .as("Promo page should be visible after login")
+        // After successful login, verify the header shows "Logged in as:" with the user's name
+        // This text only appears when user is logged in (LOGIN link is replaced)
+        assertThat(page.locator("text=/Logged in as:/i").isVisible())
+                .as("Header should show 'Logged in as:' after successful login")
                 .isTrue();
+
+        // Verify the page title indicates we're on the promo page
+        assertThat(page.title())
+                .as("Page title should indicate promo page after successful login")
+                .contains("Plants By WebSphere Promo");
     }
 }
