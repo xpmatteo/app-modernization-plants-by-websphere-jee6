@@ -21,7 +21,6 @@ import java.util.Collection;
 
 import jakarta.ejb.EJB;
 import jakarta.enterprise.context.SessionScoped;
-import jakarta.faces.application.Application;
 import jakarta.faces.context.FacesContext;
 
 import com.ibm.websphere.samples.pbw.ejb.CustomerMgr;
@@ -70,6 +69,24 @@ public class AccountBean implements Serializable {
 	private int orderNum = 1;
 	private boolean register;
 	private boolean updating;
+
+	/**
+	 * No-arg constructor for CDI/EJB container instantiation.
+	 */
+	public AccountBean() {
+	}
+
+	/**
+	 * Constructor for dependency injection (used in testing).
+	 * @param login CustomerMgr for customer operations
+	 * @param mailer MailerBean for sending emails
+	 * @param shoppingCart ShoppingCartBean for cart operations
+	 */
+	public AccountBean(CustomerMgr login, MailerBean mailer, ShoppingCartBean shoppingCart) {
+		this.login = login;
+		this.mailer = mailer;
+		this.shoppingCart = shoppingCart;
+	}
 
 	public String performAccount() {
 		if (customer == null || loginInfo == null) {
@@ -124,10 +141,6 @@ public class AccountBean implements Serializable {
 	}
 
 	public String performCompleteCheckout() {
-		FacesContext context = FacesContext.getCurrentInstance();
-		context.getApplication()
-				.evaluateExpressionGet(context, "#{shopping}", ShoppingBean.class);
-
 		// persist the order
 		OrderInfo oi = new OrderInfo(shoppingCart.createOrder(
 				customer.getCustomerID(), orderInfo.getBillName(),
@@ -282,5 +295,14 @@ public class AccountBean implements Serializable {
 
 	public boolean isUpdating() {
 		return updating;
+	}
+
+	// Package-private setters for testing
+	void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	void setOrderInfo(OrderInfo orderInfo) {
+		this.orderInfo = orderInfo;
 	}
 }

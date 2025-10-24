@@ -274,18 +274,29 @@ public class Util {
      * @param msg Message to be output.
      */
     static final public void debug(String msg) {
-        FacesContext context = FacesContext.getCurrentInstance();
-        if (context != null) {
-        	Application app = context.getApplication();
-        	if (app != null) {
-        		ProjectStage stage = app.getProjectStage();
-        		if (stage == ProjectStage.Development || stage == ProjectStage.UnitTest) {
-        			setDebug(true);
-        		}
-        	}
-        	if (debug) {
-        		System.out.println(msg);
-        	}
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            if (context != null) {
+                Application app = context.getApplication();
+                if (app != null) {
+                    ProjectStage stage = app.getProjectStage();
+                    if (stage == ProjectStage.Development || stage == ProjectStage.UnitTest) {
+                        setDebug(true);
+                    }
+                }
+                if (debug) {
+                    System.out.println(msg);
+                }
+            } else {
+                // When running outside of JSF context (e.g., unit tests), just print if debug is enabled
+                if (debug) {
+                    System.out.println(msg);
+                }
+            }
+        } catch (Throwable t) {
+            // Silently ignore any exceptions or errors during debug logging
+            // This ensures debug statements never break the application
+            // Catches both Exception and Error (including NoClassDefFoundError)
         }
     }
 
