@@ -101,57 +101,21 @@ public class LoginTest {
                 .as("Should be on login page")
                 .isTrue();
 
-        // Take a screenshot BEFORE filling the form
-        page.screenshot(new Page.ScreenshotOptions().setPath(java.nio.file.Paths.get("target/login-before.png")));
-        System.out.println("Screenshot before login saved to target/login-before.png");
-        System.out.println("URL before login: " + page.url());
-
         // Fill in the login credentials
         loginPage.fillEmail(TEST_USER_EMAIL);
         loginPage.fillPassword(TEST_USER_PASSWORD);
 
-        // Take a screenshot AFTER filling but BEFORE clicking
-        page.screenshot(new Page.ScreenshotOptions().setPath(java.nio.file.Paths.get("target/login-filled.png")));
-        System.out.println("Screenshot after filling form saved to target/login-filled.png");
-
-        // Now click the sign in button
+        // Click the sign in button
         loginPage.clickSignIn();
 
         // Wait for navigation to complete (JSF pages may take a moment)
         page.waitForLoadState();
 
-        // Debug: Print page content to see what's happening
-        System.out.println("Current URL after login: " + page.url());
-        System.out.println("Page title: " + page.title());
-
-        // Take a screenshot for debugging
-        page.screenshot(new Page.ScreenshotOptions().setPath(java.nio.file.Paths.get("target/login-result.png")));
-        System.out.println("Screenshot saved to target/login-result.png");
-
-        // Check for JSF validation errors
-        var validationErrors = page.locator("span[style*='color'][style*='ff0033'], span[style*='color'][style*='FF0033']");
-        if (validationErrors.count() > 0) {
-            System.out.println("Found validation errors:");
-            for (int i = 0; i < validationErrors.count(); i++) {
-                String errorText = validationErrors.nth(i).textContent();
-                if (!errorText.trim().isEmpty()) {
-                    System.out.println("  - " + errorText);
-                }
-            }
-        }
-
-        // Check if there's an error in the page content
-        if (page.title().contains("Error")) {
-            System.out.println("ERROR PAGE DETECTED!");
-            System.out.println("Page content snippet:");
-            System.out.println(page.content().substring(0, Math.min(500, page.content().length())));
-        }
-
-        // Check if there's an error message (for debugging)
+        // Verify no error message is displayed
         String errorMessage = loginPage.getErrorMessage();
-        if (!errorMessage.isEmpty()) {
-            throw new AssertionError("Login failed with error: " + errorMessage);
-        }
+        assertThat(errorMessage)
+                .as("Should not have error message after successful login")
+                .isEmpty();
 
         // After successful login, verify the header shows "Logged in as:" with the user's name
         // This text only appears when user is logged in (LOGIN link is replaced)
@@ -187,10 +151,6 @@ public class LoginTest {
         // Wait for the page to process the request
         page.waitForLoadState();
 
-        // Take a screenshot for debugging
-        page.screenshot(new Page.ScreenshotOptions().setPath(java.nio.file.Paths.get("target/login-failed.png")));
-        System.out.println("Screenshot saved to target/login-failed.png");
-
         // Verify we're still on the login page (not redirected to promo page)
         assertThat(loginPage.isOnLoginPage())
                 .as("Should remain on login page after failed login")
@@ -206,7 +166,5 @@ public class LoginTest {
         assertThat(page.locator("text=/Logged in as:/i").isVisible())
                 .as("Should not show 'Logged in as:' after failed login")
                 .isFalse();
-
-        System.out.println("Login correctly rejected with error: " + errorMessage);
     }
 }
