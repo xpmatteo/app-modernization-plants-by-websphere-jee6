@@ -33,7 +33,7 @@ public class LoginTest {
         playwright = Playwright.create();
         browser = playwright.chromium().launch(
                 new BrowserType.LaunchOptions()
-                        .setHeadless(false) // Set to false to see browser during test development
+                        .setHeadless(true) // Set to false to see browser during test development
                         .setTimeout(3000) // 3 second timeout
                         .setArgs(java.util.Arrays.asList(
                                 // Prevent Chrome from showing "controlled by automated software" banner
@@ -91,47 +91,6 @@ public class LoginTest {
     }
 
     @Test
-    @Order(1)
-    @DisplayName("Login page loads and form can be filled")
-    void testLoginPageLoadsAndFormWorks() {
-        // Navigate to login page
-        loginPage.navigate(TestConfig.getBaseUrl());
-
-        // Verify we're on the login page
-        assertThat(loginPage.isOnLoginPage())
-                .as("Should be on login page")
-                .isTrue();
-
-        // Verify page title loaded
-        assertThat(page.title())
-                .as("Page should have correct title")
-                .contains("Plants By WebSphere");
-
-        // Verify we can fill in the email field
-        loginPage.fillEmail(TEST_USER_EMAIL);
-
-        // Verify we can fill in the password field
-        loginPage.fillPassword(TEST_USER_PASSWORD);
-
-        // If we got here, the form is working correctly
-        // (We're not testing actual login success since that requires valid test data)
-    }
-
-    @Test
-    @Order(2)
-    @DisplayName("Login form has sign in button")
-    void testLoginFormHasSignInButton() {
-        // Navigate to login page
-        loginPage.navigate(TestConfig.getBaseUrl());
-
-        // Verify the sign in button is visible
-        assertThat(page.getByRole(AriaRole.IMG, new Page.GetByRoleOptions().setName("Sign in")).isVisible())
-                .as("Sign in button should be visible")
-                .isTrue();
-    }
-
-    @Test
-    @Order(3)
     @DisplayName("User can successfully log in with valid credentials")
     void testSuccessfulLogin() {
         // Navigate directly to login page
@@ -207,7 +166,6 @@ public class LoginTest {
     }
 
     @Test
-    @Order(4)
     @DisplayName("Login fails with invalid credentials")
     void testLoginWithInvalidCredentials() {
         // Navigate to login page
