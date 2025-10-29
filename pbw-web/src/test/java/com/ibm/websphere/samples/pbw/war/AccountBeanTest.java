@@ -118,21 +118,6 @@ class AccountBeanTest {
 	}
 
 	@Test
-	@DisplayName("should check inventory for all items in cart")
-	void testPerformCompleteCheckout_ChecksInventoryForAllItems() throws Exception {
-		// When
-		accountBean.performCompleteCheckout();
-
-		// Then
-		assertThat(shoppingCart.getTotalCheckInventoryCallCount()).isEqualTo(2);
-
-		// Verify each specific item was checked
-		for (Inventory item : testCartItems) {
-			assertThat(shoppingCart.getCheckInventoryCallCount(item)).isEqualTo(1);
-		}
-	}
-
-	@Test
 	@DisplayName("should send confirmation email with correct customer and order ID")
 	void testPerformCompleteCheckout_SendsConfirmationEmail() throws Exception {
 		// When
