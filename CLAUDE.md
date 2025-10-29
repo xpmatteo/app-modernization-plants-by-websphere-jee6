@@ -43,7 +43,40 @@ All code has been consolidated into the WAR module for simpler deployment and ma
 
 ## Common Development Commands
 
-### Running Locally with Docker Compose (Recommended for Development)
+### Make Targets (Recommended)
+
+The project includes a Makefile with convenient targets for development:
+
+```bash
+# Show all available commands
+make help
+
+# Rebuild and restart the application (recommended for development)
+make restart
+
+# Start all services
+make up
+
+# Stop all services
+make down
+
+# View logs
+make logs
+
+# Build the application
+make build
+
+# Run tests
+make test
+
+# Populate database with sample data
+make populate
+
+# Clean build artifacts
+make clean
+```
+
+### Running Locally with Docker Compose
 
 ```bash
 # Build the application
@@ -77,7 +110,10 @@ docker-compose down -v
 On first startup, the database must be populated with sample data:
 
 ```bash
-# After starting the application, populate the database
+# Using make (recommended)
+make populate
+
+# Or manually with curl
 curl "http://localhost:9080/servlet/AdminServlet?admintype=populate"
 
 # Or navigate to this URL in a browser
