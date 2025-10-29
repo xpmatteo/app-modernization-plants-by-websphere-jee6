@@ -40,22 +40,6 @@
 			<version>3.24.2</version>
 			<scope>test</scope>
 		</dependency>
-
-		<!-- Mockito for mocking -->
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-			<version>5.15.2</version>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- ByteBuddy for Mockito (explicit version for Java 21+ compatibility) -->
-		<dependency>
-			<groupId>net.bytebuddy</groupId>
-			<artifactId>byte-buddy</artifactId>
-			<version>1.15.11</version>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -87,8 +71,6 @@
 					<argLine>
 						--add-opens java.base/java.lang=ALL-UNNAMED
 						--add-opens java.base/java.util=ALL-UNNAMED
-						--add-opens java.base/java.lang.reflect=ALL-UNNAMED
-						-javaagent:${settings.localRepository}/net/bytebuddy/byte-buddy-agent/1.15.11/byte-buddy-agent-1.15.11.jar
 					</argLine>
 				</configuration>
 			</plugin>

@@ -97,24 +97,54 @@ class AccountBeanInventoryTest {
 		accountBean.setOrderInfo(testOrderInfo);
 	}
 
-	private Inventory createInventory(String id, int quantity, int minThreshold, float price) {
-		Inventory inv = new Inventory(
-			id,
-			"Test Item " + id,
-			"Heading",
-			"Description",
-			"Package Info",
-			"image.jpg",
-			price,
-			price * 0.5f,
-			quantity,
-			1,
-			"Notes",
-			true
-		);
-		inv.setMinThreshold(minThreshold);
-		testEntityManager.addInventory(inv);
-		return inv;
+	private InventoryBuilder inventory(String id) {
+		return new InventoryBuilder(id);
+	}
+
+	private class InventoryBuilder {
+		private String id;
+		private int quantity;
+		private int minThreshold = 50; // default
+		private float price = 10.0f;    // default
+
+		public InventoryBuilder(String id) {
+			this.id = id;
+		}
+
+		public InventoryBuilder withQuantity(int quantity) {
+			this.quantity = quantity;
+			return this;
+		}
+
+		public InventoryBuilder withMinThreshold(int minThreshold) {
+			this.minThreshold = minThreshold;
+			return this;
+		}
+
+		public InventoryBuilder withPrice(float price) {
+			this.price = price;
+			return this;
+		}
+
+		public Inventory create() {
+			Inventory inv = new Inventory(
+				id,
+				"Test Item " + id,
+				"Heading",
+				"Description",
+				"Package Info",
+				"image.jpg",
+				price,
+				price * 0.5f,
+				quantity,
+				1,
+				"Notes",
+				true
+			);
+			inv.setMinThreshold(minThreshold);
+			testEntityManager.addInventory(inv);
+			return inv;
+		}
 	}
 
 	private void addItemToCart(String inventoryId, int orderQuantity) {
@@ -130,7 +160,10 @@ class AccountBeanInventoryTest {
 	@DisplayName("should decrease inventory when sufficient stock is available")
 	void testSufficientInventory() throws Exception {
 		// Given - plenty of stock, well above minThreshold
-		createInventory("ITEM-001", 100, 50, 10.0f);
+		inventory("ITEM-001")
+			.withQuantity(100)
+			.withMinThreshold(50)
+			.create();
 		addItemToCart("ITEM-001", 10);
 
 		// When
@@ -149,7 +182,10 @@ class AccountBeanInventoryTest {
 	@DisplayName("should handle exact inventory match (order quantity = stock)")
 	void testExactInventoryMatch() throws Exception {
 		// Given - exact quantity available
-		createInventory("ITEM-002", 25, 50, 15.0f);
+		inventory("ITEM-002")
+			.withQuantity(25)
+			.withMinThreshold(50)
+			.create();
 		addItemToCart("ITEM-002", 25);
 
 		// When
@@ -170,7 +206,10 @@ class AccountBeanInventoryTest {
 	@DisplayName("should handle insufficient inventory (partial stock)")
 	void testInsufficientInventory() throws Exception {
 		// Given - only 5 items in stock, order 20
-		createInventory("ITEM-003", 5, 50, 20.0f);
+		inventory("ITEM-003")
+			.withQuantity(5)
+			.withMinThreshold(50)
+			.create();
 		addItemToCart("ITEM-003", 20);
 
 		// When
@@ -191,7 +230,10 @@ class AccountBeanInventoryTest {
 	@DisplayName("should handle zero inventory")
 	void testZeroInventory() throws Exception {
 		// Given - no stock available
-		createInventory("ITEM-004", 0, 50, 25.0f);
+		inventory("ITEM-004")
+			.withQuantity(0)
+			.withMinThreshold(50)
+			.create();
 		addItemToCart("ITEM-004", 10);
 
 		// When
@@ -213,7 +255,10 @@ class AccountBeanInventoryTest {
 	@DisplayName("should create backorder when inventory drops below minThreshold")
 	void testDropsBelowMinThreshold() throws Exception {
 		// Given - 60 in stock, minThreshold=50, order 15
-		createInventory("ITEM-005", 60, 50, 12.0f);
+		inventory("ITEM-005")
+			.withQuantity(60)
+			.withMinThreshold(50)
+			.create();
 		addItemToCart("ITEM-005", 15);
 
 		// When
@@ -233,7 +278,10 @@ class AccountBeanInventoryTest {
 	@DisplayName("should NOT create backorder when inventory stays above minThreshold")
 	void testStaysAboveMinThreshold() throws Exception {
 		// Given - 100 in stock, minThreshold=50, order 30
-		createInventory("ITEM-006", 100, 50, 18.0f);
+		inventory("ITEM-006")
+			.withQuantity(100)
+			.withMinThreshold(50)
+			.create();
 		addItemToCart("ITEM-006", 30);
 
 		// When
@@ -252,7 +300,10 @@ class AccountBeanInventoryTest {
 	@DisplayName("should create backorder when already below threshold and ordered")
 	void testAlreadyBelowThreshold() throws Exception {
 		// Given - 30 in stock (already below minThreshold=50), order 10
-		createInventory("ITEM-007", 30, 50, 22.0f);
+		inventory("ITEM-007")
+			.withQuantity(30)
+			.withMinThreshold(50)
+			.create();
 		addItemToCart("ITEM-007", 10);
 
 		// When
@@ -274,7 +325,10 @@ class AccountBeanInventoryTest {
 	@DisplayName("should update existing backorder quantity")
 	void testExistingBackOrderUpdated() throws Exception {
 		// Given - existing backorder and insufficient stock (5 in stock, order 15)
-		Inventory inv = createInventory("ITEM-008", 5, 50, 30.0f);
+		Inventory inv = inventory("ITEM-008")
+			.withQuantity(5)
+			.withMinThreshold(50)
+			.create();
 		BackOrder existingBackOrder = new BackOrder(inv, 20);
 		existingBackOrder.setBackOrderID("BO-EXISTING");
 		testEntityManager.persist(existingBackOrder);
@@ -298,7 +352,10 @@ class AccountBeanInventoryTest {
 	@DisplayName("should create new backorder when none exists")
 	void testNewBackOrderCreated() throws Exception {
 		// Given - no existing backorder
-		createInventory("ITEM-009", 3, 50, 35.0f);
+		inventory("ITEM-009")
+			.withQuantity(3)
+			.withMinThreshold(50)
+			.create();
 		addItemToCart("ITEM-009", 10);
 
 		// When
@@ -319,9 +376,9 @@ class AccountBeanInventoryTest {
 	@DisplayName("should handle multiple items with mixed inventory scenarios")
 	void testMultipleItemsMixedScenarios() throws Exception {
 		// Given - three items with different stock situations
-		createInventory("ITEM-010", 100, 50, 10.0f); // sufficient, above threshold
-		createInventory("ITEM-011", 40, 50, 15.0f);  // below threshold
-		createInventory("ITEM-012", 5, 50, 20.0f);   // insufficient stock
+		inventory("ITEM-010").withQuantity(100).withMinThreshold(50).create(); // sufficient, above threshold
+		inventory("ITEM-011").withQuantity(40).withMinThreshold(50).create();  // below threshold
+		inventory("ITEM-012").withQuantity(5).withMinThreshold(50).create();   // insufficient stock
 
 		addItemToCart("ITEM-010", 20); // 100 -> 80, still above threshold
 		addItemToCart("ITEM-011", 10); // 40 -> 30, still below threshold
@@ -352,9 +409,9 @@ class AccountBeanInventoryTest {
 	@DisplayName("should handle multiple items all with sufficient inventory")
 	void testMultipleItemsAllSufficient() throws Exception {
 		// Given - all items have plenty of stock
-		createInventory("ITEM-013", 200, 50, 12.0f);
-		createInventory("ITEM-014", 150, 50, 18.0f);
-		createInventory("ITEM-015", 100, 50, 25.0f);
+		inventory("ITEM-013").withQuantity(200).withMinThreshold(50).create();
+		inventory("ITEM-014").withQuantity(150).withMinThreshold(50).create();
+		inventory("ITEM-015").withQuantity(100).withMinThreshold(50).create();
 
 		addItemToCart("ITEM-013", 10);
 		addItemToCart("ITEM-014", 15);
@@ -377,9 +434,9 @@ class AccountBeanInventoryTest {
 	@DisplayName("should handle multiple items all requiring backorders")
 	void testMultipleItemsAllRequireBackOrders() throws Exception {
 		// Given - all items have insufficient stock
-		createInventory("ITEM-016", 2, 50, 10.0f);
-		createInventory("ITEM-017", 3, 50, 15.0f);
-		createInventory("ITEM-018", 0, 50, 20.0f);
+		inventory("ITEM-016").withQuantity(2).withMinThreshold(50).create();
+		inventory("ITEM-017").withQuantity(3).withMinThreshold(50).create();
+		inventory("ITEM-018").withQuantity(0).withMinThreshold(50).create();
 
 		addItemToCart("ITEM-016", 10);
 		addItemToCart("ITEM-017", 15);
