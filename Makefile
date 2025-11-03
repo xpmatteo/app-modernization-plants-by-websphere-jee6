@@ -30,6 +30,8 @@ restart:
 	docker-compose down
 	@echo "Building application..."
 	mvn clean package -DskipTests
+	@echo "Rebuilding Docker image..."
+	docker-compose build liberty
 	@echo "Starting services..."
 	docker-compose up -d
 	@echo "Waiting for application to start..."

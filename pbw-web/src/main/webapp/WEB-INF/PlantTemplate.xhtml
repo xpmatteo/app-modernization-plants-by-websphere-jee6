@@ -93,9 +93,13 @@ All Rights Reserved * Licensed Materials - Property of IBM
                 <a class="global" href="index.html" >HOME</a>&nbsp;&nbsp;:&nbsp;
                 <h:commandLink styleClass="global" action="#{shopping.performCart}"  value="SHOPPING CART" />&nbsp;&nbsp;:&nbsp;
                 <!-- Show LOGIN link if not logged in -->
-                <h:commandLink rendered="#{empty account.customer}" styleClass="global" action="#{account.performLogin}"  value="LOGIN" />&nbsp;&nbsp;:&nbsp;
+                <h:panelGroup rendered="#{empty account.customer}">
+                  <h:commandLink styleClass="global" action="#{account.performLogin}"  value="LOGIN" />&nbsp;&nbsp;:&nbsp;
+                </h:panelGroup>
                 <!-- Show user email if logged in -->
-                <h:outputText rendered="#{not empty account.customer}" styleClass="global" value="Logged in as: #{account.customer.firstName}" />&nbsp;&nbsp;:&nbsp;
+                <h:panelGroup rendered="#{not empty account.customer}">
+                  <h:outputText styleClass="global" value="Logged in as: #{account.customer.firstName}" />&nbsp;&nbsp;:&nbsp;
+                </h:panelGroup>
                 <h:commandLink styleClass="global" action="#{help.performHelp}" value="HELP" />&nbsp;&nbsp;:&nbsp;
               </p>
             </td>
