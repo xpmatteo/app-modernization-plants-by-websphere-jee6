@@ -9,6 +9,10 @@
 		<properties>
 			<property name="eclipselink.ddl-generation" value="create-tables"/>
 			<property name="eclipselink.cache.shared.default" value="false"/>
+			<!-- Phoenix tracing: Enable SQL logging and custom session customizer -->
+			<property name="eclipselink.logging.level.sql" value="FINE"/>
+			<property name="eclipselink.logging.parameters" value="true"/>
+			<property name="eclipselink.session.customizer" value="com.ibm.websphere.samples.pbw.trace.JpaTraceSessionCustomizer"/>
 		</properties>
 	</persistence-unit>
 </persistence>

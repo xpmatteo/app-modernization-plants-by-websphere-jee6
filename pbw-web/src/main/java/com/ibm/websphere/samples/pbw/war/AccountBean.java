@@ -30,6 +30,7 @@ import com.ibm.websphere.samples.pbw.ejb.ShoppingCartBean;
 //import com.ibm.websphere.samples.pbw.ejb.ShoppingCartBean;
 import com.ibm.websphere.samples.pbw.jpa.Customer;
 import com.ibm.websphere.samples.pbw.jpa.Inventory;
+import com.ibm.websphere.samples.pbw.trace.Traced;
 import com.ibm.websphere.samples.pbw.utils.Util;
 
 //import jakarta.inject.Inject;
@@ -88,6 +89,7 @@ public class AccountBean implements Serializable {
 		this.shoppingCart = shoppingCart;
 	}
 
+	@Traced(action = "account")
 	public String performAccount() {
 		if (customer == null || loginInfo == null) {
 			checkingOut = false;
@@ -105,6 +107,7 @@ public class AccountBean implements Serializable {
 		}
 	}
 
+	@Traced(action = "accountUpdate")
 	public String performAccountUpdate() {
 		if (register) {
 			customer = login.createCustomer(loginInfo.getEmail(),
@@ -129,6 +132,7 @@ public class AccountBean implements Serializable {
 		return AccountBean.ACTION_PROMO;
 	}
 
+	@Traced(action = "checkoutFinal")
 	public String performCheckoutFinal() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		ShoppingBean shopping = context.getApplication()
@@ -140,6 +144,7 @@ public class AccountBean implements Serializable {
 		return AccountBean.ACTION_CHECKOUT_FINAL;
 	}
 
+	@Traced(action = "completeCheckout")
 	public String performCompleteCheckout() {
 		// persist the order
 		OrderInfo oi = new OrderInfo(shoppingCart.createOrder(
@@ -186,6 +191,7 @@ public class AccountBean implements Serializable {
 		return AccountBean.ACTION_ORDERDONE;
 	}
 
+	@Traced(action = "login")
 	public String performLogin() {
 		checkingOut = false;
 		loginInfo = new LoginInfo();
@@ -197,6 +203,7 @@ public class AccountBean implements Serializable {
 		return AccountBean.ACTION_LOGIN;
 	}
 
+	@Traced(action = "loginComplete")
 	public String performLoginComplete() {
 		String message;
 
@@ -228,6 +235,7 @@ public class AccountBean implements Serializable {
 		return AccountBean.ACTION_PROMO;
 	}
 
+	@Traced(action = "orderInfo")
 	public String performOrderInfo() {
 		if (customer == null) {
 			checkingOut = true;
@@ -255,6 +263,7 @@ public class AccountBean implements Serializable {
 		}
 	}
 
+	@Traced(action = "register")
 	public String performRegister() {
 		loginInfo = new LoginInfo();
 		newCustomer = new Customer("", "", "", "", "", "", "", "", "", "");

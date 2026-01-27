@@ -34,6 +34,7 @@ import com.ibm.websphere.samples.pbw.ejb.CatalogMgr;
 import com.ibm.websphere.samples.pbw.ejb.ShoppingCartBean;
 //import com.ibm.websphere.samples.pbw.ejb.ShoppingCartBean;
 import com.ibm.websphere.samples.pbw.jpa.Inventory;
+import com.ibm.websphere.samples.pbw.trace.Traced;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -64,6 +65,7 @@ public class ShoppingBean implements Serializable {
 	@Inject
 	private ShoppingCartBean shoppingCart;
 
+	@Traced(action = "addToCart")
 	public String performAddToCart () {
 		Inventory item = new Inventory(this.product.getInventory());
 
@@ -74,12 +76,14 @@ public class ShoppingBean implements Serializable {
 		return performCart();
 	}
 
+	@Traced(action = "cart")
 	public String performCart () {
 		cartItems = wrapInventoryItems(shoppingCart.getItems());
 
 		return ShoppingBean.ACTION_CART;
 	}
 
+	@Traced(action = "productDetail")
 	public String performProductDetail () {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ExternalContext externalContext = facesContext.getExternalContext();
@@ -92,6 +96,7 @@ public class ShoppingBean implements Serializable {
 		return ShoppingBean.ACTION_PRODUCT;
 	}
 
+	@Traced(action = "recalculate")
 	public String performRecalculate () {
 		
 		shoppingCart.removeZeroQuantityItems();
@@ -101,6 +106,7 @@ public class ShoppingBean implements Serializable {
 		return performCart();
 	}
 
+	@Traced(action = "shopping")
 	public String performShopping () {
 		int category = 0;
 		FacesContext facesContext = FacesContext.getCurrentInstance();

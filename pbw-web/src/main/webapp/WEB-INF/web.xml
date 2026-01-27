@@ -20,6 +20,14 @@
 		<servlet-name>FacesServlet</servlet-name>
 		<servlet-class>jakarta.faces.webapp.FacesServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>ScenarioController</servlet-name>
+		<servlet-class>com.ibm.websphere.samples.pbw.trace.ScenarioController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ScenarioController</servlet-name>
+		<url-pattern>/servlet/trace/*</url-pattern>
+	</servlet-mapping>
 	<error-page>
 		<exception-type>jakarta.faces.application.ViewExpiredException</exception-type>
 		<location>/viewExpired.xhtml</location>
