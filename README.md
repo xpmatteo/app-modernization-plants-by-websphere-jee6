@@ -3,6 +3,29 @@
 
 This repo is a fork of [a training repository](https://github.com/IBMAppModernization/app-modernization-plants-by-websphere-jee6 "GitHub - IBMAppModernization/app-modernization-plants-by-websphere-jee6: Java Enterprise Edition 6 version of the Plants By Websphere Sample modified to run in a Liberty container") that I'm using as a training ground for AI-assisted modernization.
 
+## Application pages
+
+Once the app is running at http://localhost:9080, these are the pages a user can visit:
+
+- `/promo.jsf` — home page
+- `/shopping.jsf` — browse the plant catalog
+- `/product.jsf` — product detail
+- `/cart.jsf` — shopping cart
+- `/checkout_final.jsf` — checkout
+- `/orderinfo.jsf` — enter shipping and payment info
+- `/orderdone.jsf` — order confirmation
+- `/login.jsf` — sign in
+- `/register.jsf` — create an account
+- `/account.jsf` — your account
+- `/help.jsf` — reset DB
+- `/viewExpired.jsf` — shown when your session has expired
+
+Admin and utility pages:
+
+- `/backorderadmin.jsp` — manage backorders
+- `/supplierconfig.jsp` — configure suppliers
+- `/error.jsp` — error page
+
 Original README follows:
 
 # IBM Client Developer Advocacy App Modernization Series
