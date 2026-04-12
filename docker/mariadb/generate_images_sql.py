@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # ABOUTME: One-time utility to generate SQL for loading product images into INVENTORY.IMGBYTES
-# ABOUTME: Reads images from Spring Boot static resources and outputs UPDATE statements
+# ABOUTME: Reads images from the legacy webapp resources and outputs UPDATE statements
 
 import os
 import sys
@@ -17,7 +17,7 @@ def main():
     # Paths relative to this script's location
     script_dir = Path(__file__).parent
     project_root = script_dir.parent.parent
-    images_dir = project_root / "spring-boot-pbw" / "src" / "main" / "resources" / "static" / "images"
+    images_dir = project_root / "pbw-web" / "src" / "main" / "webapp" / "resources" / "images"
     output_file = script_dir / "images.sql"
 
     if not images_dir.exists():
@@ -73,7 +73,7 @@ def main():
     print(f"  1. Review the generated file: {output_file}")
     print(f"  2. Update init.sql to source this file")
     print(f"  3. Run: make reset-db && make restart")
-    print(f"  4. Test images at http://localhost:8080")
+    print(f"  4. Test images at http://localhost:9080/promo.jsf")
 
 if __name__ == '__main__':
     main()

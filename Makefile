@@ -10,10 +10,8 @@ help:
 	@echo ""
 	@echo "Available commands:"
 	@echo ""
-	@echo "  make restart         - Rebuild and restart BOTH applications (Docker Compose)"
+	@echo "  make restart         - Rebuild and restart the application (Docker Compose)"
 	@echo "                         Use this EVERY time you want to test changes manually"
-	@echo ""
-	@echo "  make test           - Run all tests (legacy + Spring Boot)"
 	@echo ""
 	@echo "  make quick-restart  - Restart without rebuilding (preserves data)"
 	@echo ""
@@ -21,7 +19,7 @@ help:
 	@echo ""
 	@echo "  make mysql-console  - Connect to MySQL console"
 	@echo ""
-	@echo "  make logs           - View logs for both applications"
+	@echo "  make logs           - View application logs"
 	@echo ""
 	@echo "  make stop           - Stop all containers"
 	@echo ""
@@ -29,9 +27,8 @@ help:
 	@echo ""
 	@echo "  make clean          - Clean Maven build artifacts and Docker containers/volumes"
 	@echo ""
-	@echo "Application URLs:"
+	@echo "Application URL:"
 	@echo "  - Legacy App:     http://localhost:9080/promo.jsf"
-	@echo "  - Spring Boot:    http://localhost:8080"
 	@echo ""
 
 .PHONY: restart
@@ -39,13 +36,6 @@ restart:
 	mvn clean package
 	docker-compose down --volumes
 	docker-compose up -d --build
-
-.PHONY: test
-test:
-	@echo "Running Spring Boot tests..."
-	cd spring-boot-pbw && ./mvnw test
-	@echo ""
-	@echo "✅ All tests passed!"
 
 # Quick restart without rebuilding (preserves data)
 .PHONY: quick-restart
