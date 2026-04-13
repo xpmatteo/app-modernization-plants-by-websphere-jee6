@@ -1,0 +1,61 @@
+steps:
+- navigate: http://localhost:9080/promo.jsf
+- click:
+    role: link
+    name: Bonsai Tree $30.00 each
+- assert_snapshot:
+    target: '[data-testid=''main-content'']'
+    contents: |-
+      - table:
+        - rowgroup:
+          - row "Home > Trees":
+            - cell "Home > Trees":
+              - paragraph:
+                - link "Home":
+                  - /url: "#"
+                - text: ">"
+                - link "Trees":
+                  - /url: "#"
+          - row "Bonsai Bonsai Tabletop Fun Bonsais are great miniature replicas of your favorite yard tree. They can be indoors or out -- and their size makes them perfect for tabletop decoration. Item selection ITEM# DESCRIPTION PRICE QUANTITY T0003 0.5 gallon mature tree $30.00 1 Add to Cart":
+            - cell "Bonsai Bonsai Tabletop Fun Bonsais are great miniature replicas of your favorite yard tree. They can be indoors or out -- and their size makes them perfect for tabletop decoration. Item selection ITEM# DESCRIPTION PRICE QUANTITY T0003 0.5 gallon mature tree $30.00 1 Add to Cart":
+              - table:
+                - rowgroup:
+                  - row "Bonsai":
+                    - cell "Bonsai":
+                      - heading "Bonsai" [level=1]
+                  - row "Bonsai Tabletop Fun Bonsais are great miniature replicas of your favorite yard tree. They can be indoors or out -- and their size makes them perfect for tabletop decoration.":
+                    - cell "Bonsai":
+                      - img "Bonsai"
+                    - cell "Tabletop Fun Bonsais are great miniature replicas of your favorite yard tree. They can be indoors or out -- and their size makes them perfect for tabletop decoration."
+                  - row:
+                    - cell:
+                      - separator
+                  - row "Item selection ITEM# DESCRIPTION PRICE QUANTITY T0003 0.5 gallon mature tree $30.00 1 Add to Cart":
+                    - cell "Item selection ITEM# DESCRIPTION PRICE QUANTITY T0003 0.5 gallon mature tree $30.00 1 Add to Cart":
+                      - table:
+                        - rowgroup:
+                          - row "Item selection":
+                            - cell "Item selection":
+                              - img "Item selection"
+                          - row "ITEM# DESCRIPTION PRICE QUANTITY":
+                            - cell "ITEM#"
+                            - cell "DESCRIPTION"
+                            - cell "PRICE"
+                            - cell "QUANTITY"
+                          - row "T0003 0.5 gallon mature tree $30.00 1":
+                            - cell "T0003"
+                            - cell "0.5 gallon mature tree"
+                            - cell "$30.00"
+                            - cell "1":
+                              - textbox: "1"
+                          - row:
+                            - cell
+                          - row "Add to Cart":
+                            - cell "Add to Cart":
+                              - link "Add to Cart":
+                                - /url: "#"
+                                - img "Add to Cart"
+      - table:
+        - rowgroup:
+          - row:
+            - cell
