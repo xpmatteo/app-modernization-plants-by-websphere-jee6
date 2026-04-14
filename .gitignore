@@ -10,3 +10,4 @@
 
 .idea
 dependencies.png
+**/*.received.yaml

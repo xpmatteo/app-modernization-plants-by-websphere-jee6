@@ -25,6 +25,8 @@ help:
 	@echo ""
 	@echo "  make stop           - Stop all containers"
 	@echo ""
+	@echo "  make approve-snapshots - Review and approve updated acceptance test snapshots"
+	@echo ""
 	@echo "  make clean          - Clean Maven build artifacts and Docker containers/volumes"
 	@echo ""
 	@echo "Application URLs:"
@@ -73,6 +75,24 @@ logs:
 .PHONY: stop
 stop:
 	docker-compose down
+
+.PHONY: approve-snapshots
+approve-snapshots:
+	@found=$$(find acceptance-tests/src/test/resources/scenarios -name "*.received.yaml" 2>/dev/null | wc -l | tr -d ' '); \
+	if [ "$$found" -eq 0 ]; then \
+		echo "No received snapshots to approve."; \
+		exit 0; \
+	fi; \
+	for received in acceptance-tests/src/test/resources/scenarios/*.received.yaml; do \
+		approved="$${received/.received/}"; \
+		echo ""; \
+		echo "=== $$(basename $$approved) ==="; \
+		diff "$$approved" "$$received" || true; \
+		cp "$$received" "$$approved"; \
+		rm "$$received"; \
+	done; \
+	echo ""; \
+	echo "✅ Approved $$found snapshot(s)."
 
 .PHONY: clean
 clean:

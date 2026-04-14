@@ -63,16 +63,24 @@ public class ScenarioRunnerTest {
     @MethodSource("scenarioFiles")
     @SuppressWarnings("unchecked")
     void runScenario(Path scenarioFile) throws Exception {
+        Path receivedFile = toReceivedPath(scenarioFile);
+        assertThat(receivedFile)
+                .as("Pending approval: %s exists. Review it then run 'make approve-snapshots', or delete it to discard.",
+                        receivedFile.getFileName())
+                .doesNotExist();
+
         Yaml yaml = createYaml();
         Map<String, Object> scenario = yaml.load(Files.readString(scenarioFile));
         List<Map<String, Object>> steps = (List<Map<String, Object>>) scenario.get("steps");
 
         Page page = browser.newPage();
         try {
-            boolean updated = executeSteps(page, steps, scenarioFile);
-            if (updated) {
-                Files.writeString(scenarioFile, yaml.dump(scenario));
-                fail("Snapshot(s) captured in " + scenarioFile.getFileName() + ". Review and re-run.");
+            boolean needsApproval = executeSteps(page, steps);
+            if (needsApproval) {
+                Files.writeString(receivedFile, yaml.dump(scenario));
+                fail("Snapshot(s) need approval in " + scenarioFile.getFileName()
+                        + ". Review " + receivedFile.getFileName()
+                        + " then run 'make approve-snapshots'.");
             }
         } finally {
             page.close();
@@ -80,8 +88,8 @@ public class ScenarioRunnerTest {
     }
 
     @SuppressWarnings("unchecked")
-    private boolean executeSteps(Page page, List<Map<String, Object>> steps, Path scenarioFile) {
-        boolean updated = false;
+    private boolean executeSteps(Page page, List<Map<String, Object>> steps) {
+        boolean needsApproval = false;
         for (Map<String, Object> step : steps) {
             if (step.containsKey("navigate")) {
                 page.navigate((String) step.get("navigate"));
@@ -99,18 +107,18 @@ public class ScenarioRunnerTest {
                 String actual = page.locator(target).ariaSnapshot();
                 String expected = (String) snapshot.get("contents");
 
-                if (expected == null) {
-                    snapshot.put("contents", actual);
-                    updated = true;
-                } else {
-                    assertThat(actual)
-                            .as("Aria snapshot does not match %s. "
-                                    + "To update, remove the 'contents' key and re-run.", scenarioFile.getFileName())
-                            .isEqualTo(expected);
+                snapshot.put("contents", actual);
+                if (!actual.equals(expected)) {
+                    needsApproval = true;
                 }
             }
         }
-        return updated;
+        return needsApproval;
+    }
+
+    private Path toReceivedPath(Path scenarioFile) {
+        String filename = scenarioFile.getFileName().toString();
+        return scenarioFile.getParent().resolve(filename.replace(".yaml", ".received.yaml"));
     }
 
     private static Yaml createYaml() {
