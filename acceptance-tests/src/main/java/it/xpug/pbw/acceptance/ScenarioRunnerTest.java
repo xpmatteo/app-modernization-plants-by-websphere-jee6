@@ -101,7 +101,7 @@ public class ScenarioRunnerTest {
         for (Map<String, Object> step : steps) {
             if (step.containsKey("navigate")) {
                 page.navigate((String) step.get("navigate"));
-                page.waitForLoadState(LoadState.NETWORKIDLE);
+                page.waitForLoadState(LoadState.DOMCONTENTLOADED);
 
             } else if (step.containsKey("click")) {
                 Map<String, String> click = (Map<String, String>) step.get("click");
@@ -111,7 +111,7 @@ public class ScenarioRunnerTest {
                     AriaRole role = AriaRole.valueOf(click.get("role").toUpperCase());
                     page.getByRole(role, new Page.GetByRoleOptions().setName(click.get("name")).setExact(true)).click();
                 }
-                page.waitForLoadState(LoadState.NETWORKIDLE);
+                page.waitForLoadState(LoadState.DOMCONTENTLOADED);
 
             } else if (step.containsKey("fill")) {
                 Map<String, String> fill = (Map<String, String>) step.get("fill");
