@@ -25,6 +25,8 @@ help:
 	@echo ""
 	@echo "  make stop           - Stop all containers"
 	@echo ""
+	@echo "  make diff-snapshots    - Show diff between approved and received snapshots"
+	@echo ""
 	@echo "  make approve-snapshots - Review and approve updated acceptance test snapshots"
 	@echo ""
 	@echo "  make clean          - Clean Maven build artifacts and Docker containers/volumes"
@@ -66,6 +68,7 @@ logs:
 
 .PHONY: test
 test:
+	find acceptance-tests/src/test/resources/scenarios -name "*.received.yaml" -delete
 	cd acceptance-tests && mvn test
 
 .PHONY: stop
@@ -89,6 +92,20 @@ approve-snapshots:
 	done; \
 	echo ""; \
 	echo "✅ Approved $$found snapshot(s)."
+
+.PHONY: diff-snapshots
+diff-snapshots:
+	@found=$$(find acceptance-tests/src/test/resources/scenarios -name "*.received.yaml" 2>/dev/null | wc -l | tr -d ' '); \
+	if [ "$$found" -eq 0 ]; then \
+		echo "No received snapshots to diff."; \
+		exit 0; \
+	fi; \
+	for received in acceptance-tests/src/test/resources/scenarios/*.received.yaml; do \
+		approved="$${received/.received/}"; \
+		echo ""; \
+		echo "=== $$(basename $$approved) ==="; \
+		diff "$$approved" "$$received" || true; \
+	done
 
 .PHONY: clean
 clean:
