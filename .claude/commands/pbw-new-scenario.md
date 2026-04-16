@@ -18,6 +18,23 @@ Scenario files are YAML with a `steps` list. The supported step types are:
     role: link          # AriaRole in lowercase: link, button, menuitem, checkbox, etc.
     name: Bonsai Tree $30.00 each
 
+# Click an element by CSS locator (use when the element has no accessible name)
+- click:
+    locator: '[id="orderinfo:shipisbill"]'
+
+# Fill a form field by CSS locator
+- fill:
+    locator: '[id="login:email"]'
+    value: plants@plantsbywebsphere.ibm.com
+
+# Fill a form field by label text
+- fill:
+    label: Full Name
+    value: David Grover
+
+# Assert the current URL contains a substring
+- assert_url: orderinfo.jsf
+
 # Assert the ARIA snapshot of a CSS-locator target
 - assert_snapshot:
     target: '[data-testid=''main-content'']'
@@ -31,7 +48,10 @@ The conventional snapshot target in this project is `[data-testid='main-content'
 If the target page lacks that attribute, check the page HTML to find which elements
 carry `data-testid` attributes.
 
-There is no fill/type step — form input is not yet supported by the runner.
+**Note on JSF URLs:** JSF uses server-side forwards for form navigation, so the URL
+does not change after form submissions. `assert_url` reflects the URL of the page
+that submitted the form, not the rendered destination. Use it to verify you are on
+the expected page before interacting with it.
 
 ---
 

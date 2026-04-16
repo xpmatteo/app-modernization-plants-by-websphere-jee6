@@ -53,8 +53,10 @@ public class ScenarioRunnerTest {
     }
 
     Stream<Arguments> scenarioFiles() throws IOException {
+        String filter = System.getProperty("scenario");
         return Files.list(SCENARIOS_DIR)
                 .filter(p -> p.toString().endsWith(".yaml"))
+                .filter(p -> filter == null || p.getFileName().toString().equals(filter + ".yaml"))
                 .sorted()
                 .map(p -> arguments(named(p.getFileName().toString(), p)));
     }
@@ -74,6 +76,7 @@ public class ScenarioRunnerTest {
         List<Map<String, Object>> steps = (List<Map<String, Object>>) scenario.get("steps");
 
         Page page = browser.newPage();
+        page.setDefaultTimeout(10000);
         try {
             boolean needsApproval = executeSteps(page, steps);
             if (needsApproval) {
@@ -82,6 +85,11 @@ public class ScenarioRunnerTest {
                         + ". Review " + receivedFile.getFileName()
                         + " then run 'make approve-snapshots'.");
             }
+        } catch (Exception | AssertionError e) {
+            Path screenshot = toScreenshotPath(scenarioFile);
+            page.screenshot(new Page.ScreenshotOptions().setPath(screenshot).setFullPage(true));
+            System.err.println("Screenshot saved to: " + screenshot);
+            throw e;
         } finally {
             page.close();
         }
@@ -97,8 +105,12 @@ public class ScenarioRunnerTest {
 
             } else if (step.containsKey("click")) {
                 Map<String, String> click = (Map<String, String>) step.get("click");
-                AriaRole role = AriaRole.valueOf(click.get("role").toUpperCase());
-                page.getByRole(role, new Page.GetByRoleOptions().setName(click.get("name")).setExact(true)).click();
+                if (click.containsKey("locator")) {
+                    page.locator(click.get("locator")).click();
+                } else {
+                    AriaRole role = AriaRole.valueOf(click.get("role").toUpperCase());
+                    page.getByRole(role, new Page.GetByRoleOptions().setName(click.get("name")).setExact(true)).click();
+                }
                 page.waitForLoadState(LoadState.NETWORKIDLE);
 
             } else if (step.containsKey("fill")) {
@@ -109,6 +121,11 @@ public class ScenarioRunnerTest {
                 } else {
                     page.locator(fill.get("locator")).fill(value);
                 }
+
+            } else if (step.containsKey("assert_url")) {
+                String expected = (String) step.get("assert_url");
+                String actual = page.url();
+                assertThat(actual).as("URL mismatch").contains(expected);
 
             } else if (step.containsKey("assert_snapshot")) {
                 Map<String, Object> snapshot = (Map<String, Object>) step.get("assert_snapshot");
@@ -128,6 +145,11 @@ public class ScenarioRunnerTest {
     private Path toReceivedPath(Path scenarioFile) {
         String filename = scenarioFile.getFileName().toString();
         return scenarioFile.getParent().resolve(filename.replace(".yaml", ".received.yaml"));
+    }
+
+    private Path toScreenshotPath(Path scenarioFile) {
+        String filename = scenarioFile.getFileName().toString();
+        return scenarioFile.getParent().resolve(filename.replace(".yaml", ".failed.png"));
     }
 
     private static Yaml createYaml() {

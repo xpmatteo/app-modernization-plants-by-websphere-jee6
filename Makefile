@@ -13,13 +13,14 @@ help:
 	@echo "  make restart         - Rebuild and restart the application (Docker Compose)"
 	@echo "                         Use this EVERY time you want to test changes manually"
 	@echo ""
-	@echo "  make quick-restart  - Restart without rebuilding (preserves data)"
+	@echo "  make quick-restart  - Restart without taking down the DB"
 	@echo ""
 	@echo "  make reset-db       - Reset BOTH databases (plantsdb + plantsdb_test)"
 	@echo ""
 	@echo "  make mysql-console  - Connect to MySQL console"
 	@echo ""
 	@echo "  make test           - Run all the tests"
+	@echo "  make test SCENARIO=login-bonsai-add-to-cart  - Run a single scenario"
 	@echo ""
 	@echo "  make logs           - View application logs"
 	@echo ""
@@ -41,11 +42,12 @@ restart:
 	docker-compose down --volumes
 	docker-compose up -d --build
 
-# Quick restart without rebuilding (preserves data)
+# Quick restart (preserves data)
 .PHONY: quick-restart
 quick-restart:
-	docker-compose down
-	docker-compose up -d
+	mvn package
+	docker-compose down app
+	docker-compose up -d --build
 
 # Reset BOTH databases (plantsdb and plantsdb_test)
 .PHONY: reset-db
@@ -72,10 +74,13 @@ ACCEPTANCE_SOURCES := $(shell find acceptance-tests/src/main -name "*.java") acc
 $(ACCEPTANCE_JAR): $(ACCEPTANCE_SOURCES)
 	cd acceptance-tests && mvn package -q
 
+SCENARIO ?=
+SCENARIO_FLAG := $(if $(SCENARIO),-Dscenario=$(SCENARIO),)
+
 .PHONY: test
 test: $(ACCEPTANCE_JAR)
 	find acceptance-tests/src/test/resources/scenarios -name "*.received.yaml" -delete
-	cd acceptance-tests && java -jar target/acceptance-tests-0.0.1-SNAPSHOT.jar
+	cd acceptance-tests && java $(SCENARIO_FLAG) -jar target/acceptance-tests-0.0.1-SNAPSHOT.jar
 
 .PHONY: stop
 stop:

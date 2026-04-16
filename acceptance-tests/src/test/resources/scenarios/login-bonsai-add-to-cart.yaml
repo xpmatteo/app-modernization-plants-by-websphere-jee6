@@ -1,0 +1,611 @@
+steps:
+- navigate: http://localhost:9080/promo.jsf
+- click:
+    role: link
+    name: LOGIN
+- fill:
+    locator: '[id="login:email"]'
+    value: plants@plantsbywebsphere.ibm.com
+- fill:
+    locator: '[id="login:password"]'
+    value: plants
+- click:
+    role: link
+    name: Sign in
+- click:
+    role: link
+    name: Bonsai Tree $30.00 each
+- click:
+    role: link
+    name: Add to Cart
+- assert_snapshot:
+    target: '[data-testid=''main-content'']'
+    contents: |-
+      - table:
+        - rowgroup:
+          - row "Home":
+            - cell "Home":
+              - link "Home":
+                - /url: "#"
+          - 'row "Shopping Cart Here are the items you have selected. To recalculate your total after changing the quantity of an item, select the ''Recalculate'' button. To remove an item from your cart, enter \"0\" as the quantity. Select ''Checkout Now'' to begin the checkout process. ITEM # ITEM DESCRIPTION PACKAGING QUANTITY PRICE SUBTOTAL T0003 Bonsai 0.5 gallon mature tree 1 $30.00 $30.00 Order Subtotal: $30.00 Continue ShoppingCheckout Now"':
+            - 'cell "Shopping Cart Here are the items you have selected. To recalculate your total after changing the quantity of an item, select the ''Recalculate'' button. To remove an item from your cart, enter \"0\" as the quantity. Select ''Checkout Now'' to begin the checkout process. ITEM # ITEM DESCRIPTION PACKAGING QUANTITY PRICE SUBTOTAL T0003 Bonsai 0.5 gallon mature tree 1 $30.00 $30.00 Order Subtotal: $30.00 Continue ShoppingCheckout Now"':
+              - table:
+                - rowgroup:
+                  - row "Shopping Cart":
+                    - cell "Shopping Cart"
+                  - row "Here are the items you have selected. To recalculate your total after changing the quantity of an item, select the 'Recalculate' button. To remove an item from your cart, enter \"0\" as the quantity. Select 'Checkout Now' to begin the checkout process.":
+                    - cell "Here are the items you have selected. To recalculate your total after changing the quantity of an item, select the 'Recalculate' button. To remove an item from your cart, enter \"0\" as the quantity. Select 'Checkout Now' to begin the checkout process.":
+                      - paragraph: Here are the items you have selected. To recalculate your total after changing the quantity of an item, select the 'Recalculate' button. To remove an item from your cart, enter "0" as the quantity. Select 'Checkout Now' to begin the checkout process.
+                  - 'row "ITEM # ITEM DESCRIPTION PACKAGING QUANTITY PRICE SUBTOTAL T0003 Bonsai 0.5 gallon mature tree 1 $30.00 $30.00"':
+                    - 'cell "ITEM # ITEM DESCRIPTION PACKAGING QUANTITY PRICE SUBTOTAL T0003 Bonsai 0.5 gallon mature tree 1 $30.00 $30.00"':
+                      - table:
+                        - rowgroup:
+                          - 'row "ITEM # ITEM DESCRIPTION PACKAGING QUANTITY PRICE SUBTOTAL"':
+                            - columnheader
+                            - 'columnheader "ITEM #"'
+                            - columnheader "ITEM DESCRIPTION"
+                            - columnheader "PACKAGING"
+                            - columnheader "QUANTITY"
+                            - columnheader "PRICE"
+                            - columnheader "SUBTOTAL"
+                            - columnheader
+                        - rowgroup:
+                          - row "T0003 Bonsai 0.5 gallon mature tree 1 $30.00 $30.00":
+                            - cell
+                            - cell "T0003"
+                            - cell "Bonsai"
+                            - cell "0.5 gallon mature tree"
+                            - cell "1":
+                              - textbox: "1"
+                            - cell "$30.00"
+                            - cell "$30.00"
+                            - cell
+                  - row:
+                    - cell:
+                      - separator
+                  - 'row "Order Subtotal: $30.00"':
+                    - 'cell "Order Subtotal: $30.00"':
+                      - paragraph: "Order Subtotal: $30.00"
+                  - row:
+                    - cell
+                  - row:
+                    - cell
+                  - row:
+                    - cell
+                  - row "Continue ShoppingCheckout Now":
+                    - cell "Continue ShoppingCheckout Now":
+                      - link "Continue Shopping":
+                        - /url: "#"
+                        - img "Continue Shopping"
+                      - link:
+                        - /url: "#"
+                        - img
+                      - link "Checkout Now":
+                        - /url: "#"
+                        - img "Checkout Now"
+          - row:
+            - cell
+- click:
+    role: link
+    name: Checkout Now
+- assert_url: cart.jsf
+- assert_snapshot:
+    target: '[data-testid=''main-content'']'
+    contents: |-
+      - table:
+        - rowgroup:
+          - row "Home > Shopping Cart":
+            - cell "Home > Shopping Cart":
+              - paragraph:
+                - link "Home":
+                  - /url: "#"
+                - text: ">"
+                - link "Shopping Cart":
+                  - /url: "#"
+          - row "Checkout Enter the billing and shipping information for your order below. Select 'Continue' to review and place your final order. Billing Address Shipping Information Shipping Method":
+            - cell "Checkout Enter the billing and shipping information for your order below. Select 'Continue' to review and place your final order. Billing Address Shipping Information Shipping Method":
+              - table:
+                - rowgroup:
+                  - row "Checkout":
+                    - cell "Checkout"
+                    - cell
+                    - cell
+                  - row "Enter the billing and shipping information for your order below. Select 'Continue' to review and place your final order.":
+                    - cell "Enter the billing and shipping information for your order below. Select 'Continue' to review and place your final order.":
+                      - paragraph: Enter the billing and shipping information for your order below. Select 'Continue' to review and place your final order.
+                  - row "Billing Address":
+                    - cell "Billing Address":
+                      - table "Billing Address":
+                        - caption: Billing Address
+                        - rowgroup:
+                          - row "Full Name Required indicator David Grover":
+                            - cell "Full Name":
+                              - paragraph: Full Name
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "David Grover":
+                              - paragraph:
+                                - textbox: David Grover
+                          - row "Address Line 1 Required indicator 123 Main Street":
+                            - cell "Address Line 1":
+                              - paragraph: Address Line 1
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "123 Main Street":
+                              - paragraph:
+                                - textbox: 123 Main Street
+                          - row "Address Line 2 Apt. C":
+                            - cell "Address Line 2":
+                              - paragraph: Address Line 2
+                            - cell
+                            - cell "Apt. C":
+                              - paragraph:
+                                - textbox: Apt. C
+                          - row "City Required indicator Raleigh":
+                            - cell "City":
+                              - paragraph: City
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "Raleigh":
+                              - paragraph:
+                                - textbox: Raleigh
+                          - row "State Required indicator NC":
+                            - cell "State":
+                              - paragraph: State
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "NC":
+                              - paragraph:
+                                - textbox: NC
+                          - row "Zip Code Required indicator 27604":
+                            - cell "Zip Code":
+                              - paragraph: Zip Code
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "27604":
+                              - paragraph:
+                                - textbox: "27604"
+                          - row "Phone (daytime) Required indicator 919-555-1234":
+                            - cell "Phone (daytime)":
+                              - paragraph: Phone (daytime)
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "919-555-1234":
+                              - paragraph:
+                                - textbox: 919-555-1234
+                          - row:
+                            - cell
+                  - row "Shipping Information":
+                    - cell "Shipping Information":
+                      - table "Shipping Information":
+                        - caption: Shipping Information
+                        - rowgroup:
+                          - row "Check here if the shipping address is the same as the billing address.":
+                            - cell "Check here if the shipping address is the same as the billing address.":
+                              - table:
+                                - rowgroup:
+                                  - row "Check here if the shipping address is the same as the billing address.":
+                                    - cell:
+                                      - paragraph:
+                                        - checkbox
+                                    - cell "Check here if the shipping address is the same as the billing address.":
+                                      - paragraph: Check here if the shipping address is the same as the billing address.
+                          - row "Full Name Required indicator":
+                            - cell "Full Name":
+                              - paragraph: Full Name
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell:
+                              - paragraph:
+                                - textbox
+                          - row "Address Line 1 Required indicator":
+                            - cell "Address Line 1":
+                              - paragraph: Address Line 1
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell:
+                              - paragraph:
+                                - textbox
+                          - row "Address Line 2":
+                            - cell "Address Line 2":
+                              - paragraph: Address Line 2
+                            - cell
+                            - cell:
+                              - paragraph:
+                                - textbox
+                          - row "City Required indicator":
+                            - cell "City":
+                              - paragraph: City
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell:
+                              - paragraph:
+                                - textbox
+                          - row "State Required indicator":
+                            - cell "State":
+                              - paragraph: State
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell:
+                              - paragraph:
+                                - textbox
+                          - row "Zip Code Required indicator":
+                            - cell "Zip Code":
+                              - paragraph: Zip Code
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell:
+                              - paragraph:
+                                - textbox
+                          - row "Phone (daytime) Required indicator":
+                            - cell "Phone (daytime)":
+                              - paragraph: Phone (daytime)
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell:
+                              - paragraph:
+                                - textbox
+                  - row "Shipping Method":
+                    - cell "Shipping Method":
+                      - table "Shipping Method":
+                        - caption: Shipping Method
+                        - rowgroup:
+                          - row "Select a shipping method below. Your order total will be updated on the next page.":
+                            - cell "Select a shipping method below. Your order total will be updated on the next page.":
+                              - paragraph: Select a shipping method below. Your order total will be updated on the next page.
+                          - row "Shipping Method Required indicator Standard Ground ( 3 to 6 business days ) $4.99":
+                            - cell "Shipping Method":
+                              - paragraph: Shipping Method
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "Standard Ground ( 3 to 6 business days ) $4.99":
+                              - combobox:
+                                - option "Standard Ground ( 3 to 6 business days ) $4.99" [selected]
+                                - option "Second Day Air ( 2 to 3 business days ) $8.99"
+                                - option "Next Day Air ( 1 to 2 business days ) $12.99"
+                          - row:
+                            - cell
+                          - row "Credit Card Required indicator American Express":
+                            - cell "Credit Card":
+                              - paragraph: Credit Card
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "American Express":
+                              - paragraph:
+                                - combobox:
+                                  - option "American Express" [selected]
+                                  - option "Discovery"
+                                  - option "MasterCard"
+                                  - option "VISA"
+                          - row "Card Number Required indicator":
+                            - cell "Card Number":
+                              - paragraph: Card Number
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell:
+                              - textbox
+                          - row "Expiration Month Required indicator 01":
+                            - cell "Expiration Month":
+                              - paragraph: Expiration Month
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "01":
+                              - paragraph:
+                                - combobox:
+                                  - option "01" [selected]
+                                  - option "02"
+                                  - option "03"
+                                  - option "04"
+                                  - option "05"
+                                  - option "06"
+                                  - option "07"
+                                  - option "08"
+                                  - option "09"
+                                  - option "10"
+                                  - option "11"
+                                  - option "12"
+                          - row "Expiration Year Required indicator 2026":
+                            - cell "Expiration Year":
+                              - paragraph: Expiration Year
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "2026":
+                              - paragraph:
+                                - combobox:
+                                  - option "2026" [selected]
+                                  - option "2027"
+                                  - option "2028"
+                                  - option "2029"
+                                  - option "2030"
+                          - row "Cardholder Name Required indicator":
+                            - cell "Cardholder Name":
+                              - paragraph: Cardholder Name
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell:
+                              - paragraph:
+                                - textbox
+                          - row:
+                            - cell:
+                              - paragraph
+                          - row "Continue":
+                            - cell:
+                              - paragraph
+                            - cell
+                            - cell "Continue":
+                              - link "Continue":
+                                - /url: "#"
+                                - img "Continue"
+      - table:
+        - rowgroup:
+          - row:
+            - cell
+- click:
+    locator: '[id="orderinfo:shipisbill"]'
+- fill:
+    locator: '[id="orderinfo:ccardnum"]'
+    value: '4111 1111 1111 1111'
+- fill:
+    locator: '[id="orderinfo:ccholdername"]'
+    value: David Grover
+- click:
+    role: link
+    name: Continue
+- assert_url: orderinfo.jsf
+- assert_snapshot:
+    target: '[data-testid=''main-content'']'
+    contents: |-
+      - table:
+        - rowgroup:
+          - row "Home > Shopping Cart":
+            - cell "Home > Shopping Cart":
+              - paragraph:
+                - link "Home":
+                  - /url: "#"
+                - text: ">"
+                - link "Shopping Cart":
+                  - /url: "#"
+          - row "Checkout Enter the billing and shipping information for your order below. Select 'Continue' to review and place your final order. Billing Address Shipping Information Shipping Method":
+            - cell "Checkout Enter the billing and shipping information for your order below. Select 'Continue' to review and place your final order. Billing Address Shipping Information Shipping Method":
+              - table:
+                - rowgroup:
+                  - row "Checkout":
+                    - cell "Checkout"
+                    - cell
+                    - cell
+                  - row "Enter the billing and shipping information for your order below. Select 'Continue' to review and place your final order.":
+                    - cell "Enter the billing and shipping information for your order below. Select 'Continue' to review and place your final order.":
+                      - paragraph: Enter the billing and shipping information for your order below. Select 'Continue' to review and place your final order.
+                  - row "Billing Address":
+                    - cell "Billing Address":
+                      - table "Billing Address":
+                        - caption: Billing Address
+                        - rowgroup:
+                          - row "Full Name Required indicator David Grover":
+                            - cell "Full Name":
+                              - paragraph: Full Name
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "David Grover":
+                              - paragraph:
+                                - textbox: David Grover
+                          - row "Address Line 1 Required indicator 123 Main Street":
+                            - cell "Address Line 1":
+                              - paragraph: Address Line 1
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "123 Main Street":
+                              - paragraph:
+                                - textbox: 123 Main Street
+                          - row "Address Line 2 Apt. C":
+                            - cell "Address Line 2":
+                              - paragraph: Address Line 2
+                            - cell
+                            - cell "Apt. C":
+                              - paragraph:
+                                - textbox: Apt. C
+                          - row "City Required indicator Raleigh":
+                            - cell "City":
+                              - paragraph: City
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "Raleigh":
+                              - paragraph:
+                                - textbox: Raleigh
+                          - row "State Required indicator NC":
+                            - cell "State":
+                              - paragraph: State
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "NC":
+                              - paragraph:
+                                - textbox: NC
+                          - row "Zip Code Required indicator 27604":
+                            - cell "Zip Code":
+                              - paragraph: Zip Code
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "27604":
+                              - paragraph:
+                                - textbox: "27604"
+                          - row "Phone (daytime) Required indicator 919-555-1234":
+                            - cell "Phone (daytime)":
+                              - paragraph: Phone (daytime)
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "919-555-1234":
+                              - paragraph:
+                                - textbox: 919-555-1234
+                          - row:
+                            - cell
+                  - row "Shipping Information":
+                    - cell "Shipping Information":
+                      - table "Shipping Information":
+                        - caption: Shipping Information
+                        - rowgroup:
+                          - row "Check here if the shipping address is the same as the billing address.":
+                            - cell "Check here if the shipping address is the same as the billing address.":
+                              - table:
+                                - rowgroup:
+                                  - row "Check here if the shipping address is the same as the billing address.":
+                                    - cell:
+                                      - paragraph:
+                                        - checkbox [checked]
+                                    - cell "Check here if the shipping address is the same as the billing address.":
+                                      - paragraph: Check here if the shipping address is the same as the billing address.
+                          - row "Full Name Required indicator David Grover":
+                            - cell "Full Name":
+                              - paragraph: Full Name
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "David Grover":
+                              - paragraph:
+                                - textbox: David Grover
+                          - row "Address Line 1 Required indicator 123 Main Street":
+                            - cell "Address Line 1":
+                              - paragraph: Address Line 1
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "123 Main Street":
+                              - paragraph:
+                                - textbox: 123 Main Street
+                          - row "Address Line 2 Apt. C":
+                            - cell "Address Line 2":
+                              - paragraph: Address Line 2
+                            - cell
+                            - cell "Apt. C":
+                              - paragraph:
+                                - textbox: Apt. C
+                          - row "City Required indicator Raleigh":
+                            - cell "City":
+                              - paragraph: City
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "Raleigh":
+                              - paragraph:
+                                - textbox: Raleigh
+                          - row "State Required indicator NC":
+                            - cell "State":
+                              - paragraph: State
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "NC":
+                              - paragraph:
+                                - textbox: NC
+                          - row "Zip Code Required indicator 27604":
+                            - cell "Zip Code":
+                              - paragraph: Zip Code
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "27604":
+                              - paragraph:
+                                - textbox: "27604"
+                          - row "Phone (daytime) Required indicator 919-555-1234":
+                            - cell "Phone (daytime)":
+                              - paragraph: Phone (daytime)
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "919-555-1234":
+                              - paragraph:
+                                - textbox: 919-555-1234
+                  - row "Shipping Method":
+                    - cell "Shipping Method":
+                      - table "Shipping Method":
+                        - caption: Shipping Method
+                        - rowgroup:
+                          - row "Select a shipping method below. Your order total will be updated on the next page.":
+                            - cell "Select a shipping method below. Your order total will be updated on the next page.":
+                              - paragraph: Select a shipping method below. Your order total will be updated on the next page.
+                          - row "Shipping Method Required indicator Standard Ground ( 3 to 6 business days ) $4.99":
+                            - cell "Shipping Method":
+                              - paragraph: Shipping Method
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "Standard Ground ( 3 to 6 business days ) $4.99":
+                              - combobox:
+                                - option "Standard Ground ( 3 to 6 business days ) $4.99" [selected]
+                                - option "Second Day Air ( 2 to 3 business days ) $8.99"
+                                - option "Next Day Air ( 1 to 2 business days ) $12.99"
+                          - row:
+                            - cell
+                          - row "Credit Card Required indicator American Express":
+                            - cell "Credit Card":
+                              - paragraph: Credit Card
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "American Express":
+                              - paragraph:
+                                - combobox:
+                                  - option "American Express" [selected]
+                                  - option "Discovery"
+                                  - option "MasterCard"
+                                  - option "VISA"
+                          - 'row "Card Number Required indicator 4111111111111111 orderinfo:ccardnum: Credit card numbers must be entered as XXXX XXXX XXXX XXXX."':
+                            - cell "Card Number":
+                              - paragraph: Card Number
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - 'cell "4111111111111111 orderinfo:ccardnum: Credit card numbers must be entered as XXXX XXXX XXXX XXXX."':
+                              - textbox: "4111111111111111"
+                              - text: "orderinfo:ccardnum: Credit card numbers must be entered as XXXX XXXX XXXX XXXX."
+                          - row "Expiration Month Required indicator 01":
+                            - cell "Expiration Month":
+                              - paragraph: Expiration Month
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "01":
+                              - paragraph:
+                                - combobox:
+                                  - option "01" [selected]
+                                  - option "02"
+                                  - option "03"
+                                  - option "04"
+                                  - option "05"
+                                  - option "06"
+                                  - option "07"
+                                  - option "08"
+                                  - option "09"
+                                  - option "10"
+                                  - option "11"
+                                  - option "12"
+                          - row "Expiration Year Required indicator 2026":
+                            - cell "Expiration Year":
+                              - paragraph: Expiration Year
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "2026":
+                              - paragraph:
+                                - combobox:
+                                  - option "2026" [selected]
+                                  - option "2027"
+                                  - option "2028"
+                                  - option "2029"
+                                  - option "2030"
+                          - row "Cardholder Name Required indicator David Grover":
+                            - cell "Cardholder Name":
+                              - paragraph: Cardholder Name
+                            - cell "Required indicator":
+                              - img "Required indicator"
+                            - cell "David Grover":
+                              - paragraph:
+                                - textbox: David Grover
+                          - row:
+                            - cell:
+                              - paragraph
+                          - row "Continue":
+                            - cell:
+                              - paragraph
+                            - cell
+                            - cell "Continue":
+                              - link "Continue":
+                                - /url: "#"
+                                - img "Continue"
+      - table:
+        - rowgroup:
+          - row:
+            - cell
+
+- click:
+    locator: '[id="checkout_final:submitOrder"]'
+- assert_snapshot:
+    target: '[data-testid=''main-content'']'
