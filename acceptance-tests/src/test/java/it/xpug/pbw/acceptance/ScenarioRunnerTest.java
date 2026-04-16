@@ -98,8 +98,17 @@ public class ScenarioRunnerTest {
             } else if (step.containsKey("click")) {
                 Map<String, String> click = (Map<String, String>) step.get("click");
                 AriaRole role = AriaRole.valueOf(click.get("role").toUpperCase());
-                page.getByRole(role, new Page.GetByRoleOptions().setName(click.get("name"))).click();
+                page.getByRole(role, new Page.GetByRoleOptions().setName(click.get("name")).setExact(true)).click();
                 page.waitForLoadState(LoadState.NETWORKIDLE);
+
+            } else if (step.containsKey("fill")) {
+                Map<String, String> fill = (Map<String, String>) step.get("fill");
+                String value = fill.get("value");
+                if (fill.containsKey("label")) {
+                    page.getByLabel(fill.get("label")).fill(value);
+                } else {
+                    page.locator(fill.get("locator")).fill(value);
+                }
 
             } else if (step.containsKey("assert_snapshot")) {
                 Map<String, Object> snapshot = (Map<String, Object>) step.get("assert_snapshot");

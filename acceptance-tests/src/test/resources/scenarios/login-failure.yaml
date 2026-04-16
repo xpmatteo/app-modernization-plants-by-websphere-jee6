@@ -1,0 +1,75 @@
+steps:
+- navigate: http://localhost:9080/promo.jsf
+- click:
+    role: link
+    name: LOGIN
+- fill:
+    locator: '[id="login:email"]'
+    value: wrong@example.com
+- fill:
+    locator: '[id="login:password"]'
+    value: wrongpassword
+- click:
+    role: link
+    name: Sign in
+- assert_snapshot:
+    target: '[data-testid=''main-content'']'
+    contents: |-
+      - table:
+        - rowgroup:
+          - row "Home":
+            - cell "Home":
+              - paragraph:
+                - link "Home":
+                  - /url: "#"
+          - 'row "Login or Register If you are a returning customer and previously set up an account, please enter your e-mail address and password below. E-mail address: wrong@example.com Password: Sign in If you are a New customer you can register for your own account here."':
+            - 'cell "Login or Register If you are a returning customer and previously set up an account, please enter your e-mail address and password below. E-mail address: wrong@example.com Password: Sign in If you are a New customer you can register for your own account here."':
+              - table:
+                - rowgroup:
+                  - row "Login or Register":
+                    - cell "Login or Register":
+                      - heading "Login or Register" [level=1]
+                    - cell
+                    - cell
+                  - 'row "If you are a returning customer and previously set up an account, please enter your e-mail address and password below. E-mail address: wrong@example.com Password: Sign in If you are a New customer you can register for your own account here."':
+                    - 'cell "If you are a returning customer and previously set up an account, please enter your e-mail address and password below. E-mail address: wrong@example.com Password: Sign in If you are a New customer you can register for your own account here."':
+                      - table:
+                        - rowgroup:
+                          - row "If you are a returning customer and previously set up an account, please enter your e-mail address and password below.":
+                            - cell "If you are a returning customer and previously set up an account, please enter your e-mail address and password below.":
+                              - paragraph: If you are a returning customer and previously set up an account, please enter your e-mail address and password below.
+                          - 'row "E-mail address: wrong@example.com"':
+                            - cell "E-mail address:":
+                              - paragraph: "E-mail address:"
+                            - cell "wrong@example.com":
+                              - paragraph:
+                                - textbox: wrong@example.com
+                          - row "Password:":
+                            - cell "Password:":
+                              - paragraph: "Password:"
+                            - cell:
+                              - paragraph:
+                                - textbox
+                          - row:
+                            - cell
+                          - row:
+                            - cell
+                          - row "Sign in":
+                            - cell "Sign in":
+                              - link "Sign in":
+                                - /url: "#"
+                                - img "Sign in"
+                            - cell
+                          - row:
+                            - cell
+                          - row "If you are a New customer you can register for your own account here.":
+                            - cell "If you are a New customer you can register for your own account here.":
+                              - paragraph:
+                                - text: If you are a New customer you can
+                                - link "register for your own account here":
+                                  - /url: "#"
+                                - text: .
+      - table:
+        - rowgroup:
+          - row:
+            - cell

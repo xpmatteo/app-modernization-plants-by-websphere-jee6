@@ -19,6 +19,8 @@ help:
 	@echo ""
 	@echo "  make mysql-console  - Connect to MySQL console"
 	@echo ""
+	@echo "  make test           - Run all the tests"
+	@echo ""
 	@echo "  make logs           - View application logs"
 	@echo ""
 	@echo "  make stop           - Stop all containers"
@@ -61,6 +63,10 @@ mysql-console:
 .PHONY: logs
 logs:
 	docker-compose logs -f
+
+.PHONY: test
+test:
+	cd acceptance-tests && mvn test
 
 .PHONY: stop
 stop:
