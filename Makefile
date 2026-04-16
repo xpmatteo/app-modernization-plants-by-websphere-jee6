@@ -66,10 +66,16 @@ mysql-console:
 logs:
 	docker-compose logs -f
 
+ACCEPTANCE_JAR := acceptance-tests/target/acceptance-tests-0.0.1-SNAPSHOT.jar
+ACCEPTANCE_SOURCES := $(shell find acceptance-tests/src/main -name "*.java") acceptance-tests/pom.xml
+
+$(ACCEPTANCE_JAR): $(ACCEPTANCE_SOURCES)
+	cd acceptance-tests && mvn package -q
+
 .PHONY: test
-test:
+test: $(ACCEPTANCE_JAR)
 	find acceptance-tests/src/test/resources/scenarios -name "*.received.yaml" -delete
-	cd acceptance-tests && mvn test
+	cd acceptance-tests && java -jar target/acceptance-tests-0.0.1-SNAPSHOT.jar
 
 .PHONY: stop
 stop:
