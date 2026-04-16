@@ -96,6 +96,7 @@ public class OrderItem
 	private int category;
 	private int quantity;
 	private String sellDate;
+	@Column(name="inventoryId", insertable=false, updatable=false)
 	private String inventoryId;
 
 	@ManyToOne

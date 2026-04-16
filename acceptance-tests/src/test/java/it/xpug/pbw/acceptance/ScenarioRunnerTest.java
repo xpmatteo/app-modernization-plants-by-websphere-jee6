@@ -8,6 +8,10 @@ import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.LoadState;
 import org.junit.jupiter.api.AfterAll;
+
+import java.util.Arrays;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -135,12 +139,22 @@ public class ScenarioRunnerTest {
                 String expected = (String) snapshot.get("contents");
 
                 snapshot.put("contents", actual);
-                if (!actual.equals(expected)) {
+                if (!snapshotMatches(actual, expected)) {
                     needsApproval = true;
                 }
             }
         }
         return needsApproval;
+    }
+
+    private boolean snapshotMatches(String actual, String expected) {
+        if (!expected.contains("<<ANY_NUMBER>>")) {
+            return actual.equals(expected);
+        }
+        String pattern = Arrays.stream(expected.split("<<ANY_NUMBER>>", -1))
+                .map(Pattern::quote)
+                .collect(Collectors.joining("\\d+"));
+        return Pattern.compile(pattern, Pattern.DOTALL).matcher(actual).matches();
     }
 
     private Path toReceivedPath(Path scenarioFile) {

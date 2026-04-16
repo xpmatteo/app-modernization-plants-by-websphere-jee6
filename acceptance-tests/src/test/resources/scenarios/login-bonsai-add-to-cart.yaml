@@ -344,7 +344,7 @@ steps:
     locator: '[id="orderinfo:shipisbill"]'
 - fill:
     locator: '[id="orderinfo:ccardnum"]'
-    value: '4111 1111 1111 1111'
+    value: 4111 1111 1111 1111
 - fill:
     locator: '[id="orderinfo:ccholdername"]'
     value: David Grover
@@ -357,255 +357,156 @@ steps:
     contents: |-
       - table:
         - rowgroup:
-          - row "Home > Shopping Cart":
-            - cell "Home > Shopping Cart":
+          - row "Home > Shopping Cart >":
+            - cell "Home > Shopping Cart >":
               - paragraph:
                 - link "Home":
                   - /url: "#"
                 - text: ">"
                 - link "Shopping Cart":
                   - /url: "#"
-          - row "Checkout Enter the billing and shipping information for your order below. Select 'Continue' to review and place your final order. Billing Address Shipping Information Shipping Method":
-            - cell "Checkout Enter the billing and shipping information for your order below. Select 'Continue' to review and place your final order. Billing Address Shipping Information Shipping Method":
+                - text: ">"
+                - link:
+                  - /url: "#"
+          - row "Review Your Order Review your order below and select 'Submit Order' at the bottom to place your order. You can also add more items to your order by selecting 'Continue Shopping'. Order Information Order Details":
+            - cell "Review Your Order Review your order below and select 'Submit Order' at the bottom to place your order. You can also add more items to your order by selecting 'Continue Shopping'. Order Information Order Details":
               - table:
                 - rowgroup:
-                  - row "Checkout":
-                    - cell "Checkout"
+                  - row "Review Your Order":
+                    - cell "Review Your Order"
                     - cell
                     - cell
-                  - row "Enter the billing and shipping information for your order below. Select 'Continue' to review and place your final order.":
-                    - cell "Enter the billing and shipping information for your order below. Select 'Continue' to review and place your final order.":
-                      - paragraph: Enter the billing and shipping information for your order below. Select 'Continue' to review and place your final order.
-                  - row "Billing Address":
-                    - cell "Billing Address":
-                      - table "Billing Address":
-                        - caption: Billing Address
+                  - row "Review your order below and select 'Submit Order' at the bottom to place your order. You can also add more items to your order by selecting 'Continue Shopping'.":
+                    - cell "Review your order below and select 'Submit Order' at the bottom to place your order. You can also add more items to your order by selecting 'Continue Shopping'.":
+                      - paragraph: Review your order below and select 'Submit Order' at the bottom to place your order. You can also add more items to your order by selecting 'Continue Shopping'.
+                  - row "Order Information Order Details":
+                    - cell "Order Information Order Details":
+                      - table "Order Information":
+                        - caption: Order Information
                         - rowgroup:
-                          - row "Full Name Required indicator David Grover":
-                            - cell "Full Name":
-                              - paragraph: Full Name
-                            - cell "Required indicator":
-                              - img "Required indicator"
-                            - cell "David Grover":
-                              - paragraph:
-                                - textbox: David Grover
-                          - row "Address Line 1 Required indicator 123 Main Street":
-                            - cell "Address Line 1":
-                              - paragraph: Address Line 1
-                            - cell "Required indicator":
-                              - img "Required indicator"
-                            - cell "123 Main Street":
-                              - paragraph:
-                                - textbox: 123 Main Street
-                          - row "Address Line 2 Apt. C":
-                            - cell "Address Line 2":
-                              - paragraph: Address Line 2
-                            - cell
-                            - cell "Apt. C":
-                              - paragraph:
-                                - textbox: Apt. C
-                          - row "City Required indicator Raleigh":
-                            - cell "City":
-                              - paragraph: City
-                            - cell "Required indicator":
-                              - img "Required indicator"
-                            - cell "Raleigh":
-                              - paragraph:
-                                - textbox: Raleigh
-                          - row "State Required indicator NC":
-                            - cell "State":
-                              - paragraph: State
-                            - cell "Required indicator":
-                              - img "Required indicator"
-                            - cell "NC":
-                              - paragraph:
-                                - textbox: NC
-                          - row "Zip Code Required indicator 27604":
-                            - cell "Zip Code":
-                              - paragraph: Zip Code
-                            - cell "Required indicator":
-                              - img "Required indicator"
-                            - cell "27604":
-                              - paragraph:
-                                - textbox: "27604"
-                          - row "Phone (daytime) Required indicator 919-555-1234":
-                            - cell "Phone (daytime)":
-                              - paragraph: Phone (daytime)
-                            - cell "Required indicator":
-                              - img "Required indicator"
-                            - cell "919-555-1234":
-                              - paragraph:
-                                - textbox: 919-555-1234
-                          - row:
-                            - cell
-                  - row "Shipping Information":
-                    - cell "Shipping Information":
-                      - table "Shipping Information":
-                        - caption: Shipping Information
-                        - rowgroup:
-                          - row "Check here if the shipping address is the same as the billing address.":
-                            - cell "Check here if the shipping address is the same as the billing address.":
+                          - row "ORDER TOTAL $34.99 SHIPPING ADDRESS David Grover 123 Main Street Apt. C Raleigh, NC 27604 919-555-1234 BILLING ADDRESS David Grover 123 Main Street Apt. C Raleigh, NC 27604 919-555-1234":
+                            - cell "ORDER TOTAL $34.99":
                               - table:
                                 - rowgroup:
-                                  - row "Check here if the shipping address is the same as the billing address.":
-                                    - cell:
-                                      - paragraph:
-                                        - checkbox [checked]
-                                    - cell "Check here if the shipping address is the same as the billing address.":
-                                      - paragraph: Check here if the shipping address is the same as the billing address.
-                          - row "Full Name Required indicator David Grover":
-                            - cell "Full Name":
-                              - paragraph: Full Name
-                            - cell "Required indicator":
-                              - img "Required indicator"
-                            - cell "David Grover":
-                              - paragraph:
-                                - textbox: David Grover
-                          - row "Address Line 1 Required indicator 123 Main Street":
-                            - cell "Address Line 1":
-                              - paragraph: Address Line 1
-                            - cell "Required indicator":
-                              - img "Required indicator"
-                            - cell "123 Main Street":
-                              - paragraph:
-                                - textbox: 123 Main Street
-                          - row "Address Line 2 Apt. C":
-                            - cell "Address Line 2":
-                              - paragraph: Address Line 2
+                                  - row "ORDER TOTAL":
+                                    - cell "ORDER TOTAL"
+                                  - row "$34.99":
+                                    - cell "$34.99":
+                                      - paragraph: $34.99
                             - cell
-                            - cell "Apt. C":
-                              - paragraph:
-                                - textbox: Apt. C
-                          - row "City Required indicator Raleigh":
-                            - cell "City":
-                              - paragraph: City
-                            - cell "Required indicator":
-                              - img "Required indicator"
-                            - cell "Raleigh":
-                              - paragraph:
-                                - textbox: Raleigh
-                          - row "State Required indicator NC":
-                            - cell "State":
-                              - paragraph: State
-                            - cell "Required indicator":
-                              - img "Required indicator"
-                            - cell "NC":
-                              - paragraph:
-                                - textbox: NC
-                          - row "Zip Code Required indicator 27604":
-                            - cell "Zip Code":
-                              - paragraph: Zip Code
-                            - cell "Required indicator":
-                              - img "Required indicator"
-                            - cell "27604":
-                              - paragraph:
-                                - textbox: "27604"
-                          - row "Phone (daytime) Required indicator 919-555-1234":
-                            - cell "Phone (daytime)":
-                              - paragraph: Phone (daytime)
-                            - cell "Required indicator":
-                              - img "Required indicator"
-                            - cell "919-555-1234":
-                              - paragraph:
-                                - textbox: 919-555-1234
-                  - row "Shipping Method":
-                    - cell "Shipping Method":
-                      - table "Shipping Method":
-                        - caption: Shipping Method
+                            - cell "SHIPPING ADDRESS David Grover 123 Main Street Apt. C Raleigh, NC 27604 919-555-1234":
+                              - table:
+                                - rowgroup:
+                                  - row "SHIPPING ADDRESS":
+                                    - cell "SHIPPING ADDRESS"
+                                  - row "David Grover 123 Main Street Apt. C Raleigh, NC 27604 919-555-1234":
+                                    - cell "David Grover 123 Main Street Apt. C Raleigh, NC 27604 919-555-1234":
+                                      - paragraph: David Grover 123 Main Street Apt. C Raleigh, NC 27604 919-555-1234
+                            - cell
+                            - cell "BILLING ADDRESS David Grover 123 Main Street Apt. C Raleigh, NC 27604 919-555-1234":
+                              - table:
+                                - rowgroup:
+                                  - row "BILLING ADDRESS":
+                                    - cell "BILLING ADDRESS"
+                                  - row "David Grover 123 Main Street Apt. C Raleigh, NC 27604 919-555-1234":
+                                    - cell "David Grover 123 Main Street Apt. C Raleigh, NC 27604 919-555-1234":
+                                      - paragraph: David Grover 123 Main Street Apt. C Raleigh, NC 27604 919-555-1234
+                      - table "Order Details":
+                        - caption: Order Details
                         - rowgroup:
-                          - row "Select a shipping method below. Your order total will be updated on the next page.":
-                            - cell "Select a shipping method below. Your order total will be updated on the next page.":
-                              - paragraph: Select a shipping method below. Your order total will be updated on the next page.
-                          - row "Shipping Method Required indicator Standard Ground ( 3 to 6 business days ) $4.99":
-                            - cell "Shipping Method":
-                              - paragraph: Shipping Method
-                            - cell "Required indicator":
-                              - img "Required indicator"
-                            - cell "Standard Ground ( 3 to 6 business days ) $4.99":
-                              - combobox:
-                                - option "Standard Ground ( 3 to 6 business days ) $4.99" [selected]
-                                - option "Second Day Air ( 2 to 3 business days ) $8.99"
-                                - option "Next Day Air ( 1 to 2 business days ) $12.99"
-                          - row:
-                            - cell
-                          - row "Credit Card Required indicator American Express":
-                            - cell "Credit Card":
-                              - paragraph: Credit Card
-                            - cell "Required indicator":
-                              - img "Required indicator"
-                            - cell "American Express":
-                              - paragraph:
-                                - combobox:
-                                  - option "American Express" [selected]
-                                  - option "Discovery"
-                                  - option "MasterCard"
-                                  - option "VISA"
-                          - 'row "Card Number Required indicator 4111111111111111 orderinfo:ccardnum: Credit card numbers must be entered as XXXX XXXX XXXX XXXX."':
-                            - cell "Card Number":
-                              - paragraph: Card Number
-                            - cell "Required indicator":
-                              - img "Required indicator"
-                            - 'cell "4111111111111111 orderinfo:ccardnum: Credit card numbers must be entered as XXXX XXXX XXXX XXXX."':
-                              - textbox: "4111111111111111"
-                              - text: "orderinfo:ccardnum: Credit card numbers must be entered as XXXX XXXX XXXX XXXX."
-                          - row "Expiration Month Required indicator 01":
-                            - cell "Expiration Month":
-                              - paragraph: Expiration Month
-                            - cell "Required indicator":
-                              - img "Required indicator"
-                            - cell "01":
-                              - paragraph:
-                                - combobox:
-                                  - option "01" [selected]
-                                  - option "02"
-                                  - option "03"
-                                  - option "04"
-                                  - option "05"
-                                  - option "06"
-                                  - option "07"
-                                  - option "08"
-                                  - option "09"
-                                  - option "10"
-                                  - option "11"
-                                  - option "12"
-                          - row "Expiration Year Required indicator 2026":
-                            - cell "Expiration Year":
-                              - paragraph: Expiration Year
-                            - cell "Required indicator":
-                              - img "Required indicator"
-                            - cell "2026":
-                              - paragraph:
-                                - combobox:
-                                  - option "2026" [selected]
-                                  - option "2027"
-                                  - option "2028"
-                                  - option "2029"
-                                  - option "2030"
-                          - row "Cardholder Name Required indicator David Grover":
-                            - cell "Cardholder Name":
-                              - paragraph: Cardholder Name
-                            - cell "Required indicator":
-                              - img "Required indicator"
-                            - cell "David Grover":
-                              - paragraph:
-                                - textbox: David Grover
+                          - 'row "ITEM # ITEM DESCRIPTION PACKAGING QUANTITY PRICE SUBTOTAL T0003 Bonsai 0.5 gallon mature tree 1 $30.00 $30.00"':
+                            - 'cell "ITEM # ITEM DESCRIPTION PACKAGING QUANTITY PRICE SUBTOTAL T0003 Bonsai 0.5 gallon mature tree 1 $30.00 $30.00"':
+                              - table:
+                                - rowgroup:
+                                  - 'row "ITEM # ITEM DESCRIPTION PACKAGING QUANTITY PRICE SUBTOTAL"':
+                                    - columnheader
+                                    - 'columnheader "ITEM #"'
+                                    - columnheader "ITEM DESCRIPTION"
+                                    - columnheader "PACKAGING"
+                                    - columnheader "QUANTITY"
+                                    - columnheader "PRICE"
+                                    - columnheader "SUBTOTAL"
+                                    - columnheader
+                                - rowgroup:
+                                  - row "T0003 Bonsai 0.5 gallon mature tree 1 $30.00 $30.00":
+                                    - cell
+                                    - cell "T0003"
+                                    - cell "Bonsai"
+                                    - cell "0.5 gallon mature tree"
+                                    - cell "1":
+                                      - textbox: "1"
+                                    - cell "$30.00"
+                                    - cell "$30.00"
+                                    - cell
                           - row:
                             - cell:
-                              - paragraph
-                          - row "Continue":
-                            - cell:
-                              - paragraph
+                              - separator
+                          - 'row "Order Subtotal: $30.00"':
+                            - cell "Order Subtotal:":
+                              - paragraph: "Order Subtotal:"
+                            - cell "$30.00":
+                              - paragraph: $30.00
                             - cell
-                            - cell "Continue":
-                              - link "Continue":
-                                - /url: "#"
-                                - img "Continue"
+                          - 'row "Shipping, Standard Ground ( 3 to 6 business days ) $4.99: $4.99"':
+                            - cell "Shipping, Standard Ground ( 3 to 6 business days ) $4.99:":
+                              - paragraph: "Shipping, Standard Ground ( 3 to 6 business days ) $4.99:"
+                            - cell "$4.99":
+                              - paragraph: $4.99
+                            - cell
+                          - row:
+                            - cell:
+                              - separator
+                          - 'row "Order Total: $34.99"':
+                            - cell "Order Total:":
+                              - paragraph: "Order Total:"
+                            - cell "$34.99":
+                              - paragraph: $34.99
+                            - cell
+                          - row:
+                            - cell
+                          - row "Continue Shopping Submit Order":
+                            - cell "Continue Shopping Submit Order":
+                              - table:
+                                - rowgroup:
+                                  - row "Continue Shopping Submit Order":
+                                    - cell "Continue Shopping":
+                                      - link "Continue Shopping":
+                                        - /url: "#"
+                                        - img "Continue Shopping"
+                                    - cell "Submit Order":
+                                      - link "Submit Order":
+                                        - /url: "#"
+                                        - img "Submit Order"
       - table:
         - rowgroup:
           - row:
             - cell
-
 - click:
     locator: '[id="checkout_final:submitOrder"]'
 - assert_snapshot:
     target: '[data-testid=''main-content'']'
+    contents: |-
+      - table:
+        - rowgroup:
+          - row "Home":
+            - cell "Home":
+              - paragraph:
+                - link "Home":
+                  - /url: "#"
+          - row "Order Completion Thank you for making your Plants By WebSphere purchase! Order number <<ANY_NUMBER>> Expected arrival in 5-7 business days.":
+            - cell "Order Completion Thank you for making your Plants By WebSphere purchase! Order number <<ANY_NUMBER>> Expected arrival in 5-7 business days.":
+              - table:
+                - rowgroup:
+                  - row "Order Completion":
+                    - cell "Order Completion"
+                    - cell
+                    - cell
+                  - row "Thank you for making your Plants By WebSphere purchase! Order number <<ANY_NUMBER>> Expected arrival in 5-7 business days.":
+                    - cell "Thank you for making your Plants By WebSphere purchase! Order number <<ANY_NUMBER>> Expected arrival in 5-7 business days.":
+                      - paragraph: Thank you for making your Plants By WebSphere purchase!
+                      - paragraph: Order number <<ANY_NUMBER>>
+                      - paragraph: Expected arrival in 5-7 business days.
+      - table:
+        - rowgroup:
+          - row:
+            - cell
