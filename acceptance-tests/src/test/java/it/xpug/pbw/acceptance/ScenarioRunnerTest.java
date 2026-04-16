@@ -65,6 +65,7 @@ public class ScenarioRunnerTest {
     @MethodSource("scenarioFiles")
     @SuppressWarnings("unchecked")
     void runScenario(Path scenarioFile) throws Exception {
+        System.out.println(">>> " + scenarioFile.getFileName());
         Path receivedFile = toReceivedPath(scenarioFile);
         assertThat(receivedFile)
                 .as("Pending approval: %s exists. Review it then run 'make approve-snapshots', or delete it to discard.",
